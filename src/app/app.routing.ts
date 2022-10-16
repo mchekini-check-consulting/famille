@@ -3,7 +3,7 @@ import {CommonModule,} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {TemplateComponent} from "./core/template/container/template.component";
-import {DisponibilitesComponent} from "./features/disponibilites/disponibilites.component";
+import {BesoinComponent} from "./features/besoins/besoin.component";
 import {RechercheComponent} from "./features/recherche/recherche.component";
 import {MessagerieComponent} from "./features/messagerie/messagerie.component";
 import {InfosComponent} from "./features/infos/infos.component";
@@ -16,8 +16,8 @@ const routes: Routes = [
         path: '', component: TemplateComponent,
         children: [
             {
-                path: 'disponibilites',
-                component: DisponibilitesComponent
+                path: 'besoins',
+                component: BesoinComponent
             },
             {
                 path: 'recherche',

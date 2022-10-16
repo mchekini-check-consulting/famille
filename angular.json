@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "nounou": {
+    "famille": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -71,14 +71,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "nounou:build"
+            "browserTarget": "famille:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "nounou:build:production"
+              "browserTarget": "famille:build:production"
             },
             "development": {
-              "browserTarget": "nounou:build:development"
+              "browserTarget": "famille:build:development"
             },
             "defaultConfiguration": "development"
           }
@@ -86,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "nounou:build"
+            "browserTarget": "famille:build"
           }
         },
         "test": {
