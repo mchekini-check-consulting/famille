@@ -6,10 +6,10 @@ import { environment } from '../environments/environment';
     imports: [
         AuthModule.forRoot({
             config: {
-                authority: 'http://localhost:10000/auth/realms/master',
+                authority: 'http://54.83.239.110:10000/auth/realms/famille',
                 redirectUrl: window.location.origin,
                 postLogoutRedirectUri: window.location.origin,
-                clientId: 'nounou',
+                clientId: 'famille',
                 scope: 'openid profile email offline_access',
                 responseType: 'code',
                 silentRenew: false,
