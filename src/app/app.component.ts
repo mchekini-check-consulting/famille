@@ -1,26 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {OidcSecurityService} from "angular-auth-oidc-client";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
 
-     constructor(public location: Location) {}
+    constructor(private oidcSecurityService: OidcSecurityService) {
 
-    ngOnInit(){
     }
 
-    isMap(path){
-      var titlee = this.location.prepareExternalUrl(this.location.path());
-      titlee = titlee.slice( 1 );
-      if(path == titlee){
-        return false;
-      }
-      else {
-        return true;
-      }
+    ngOnInit() {
+
+
+        this.oidcSecurityService.checkAuth().subscribe(({isAuthenticated, userData, accessToken, idToken}) => {
+            if (!isAuthenticated) this.login();
+        });
     }
+
+    login() {
+        this.oidcSecurityService.authorize();
+    }
+
+    logout() {
+        this.oidcSecurityService.logoff();
+    }
+
 }

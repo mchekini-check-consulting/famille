@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {ROUTES} from "../sidebar/sidebar.component"
 import {Location} from '@angular/common';
+import {OidcSecurityService} from "angular-auth-oidc-client";
 
 @Component({
     // moduleId: module.id,
@@ -14,7 +15,8 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(location: Location, private element: ElementRef) {
+
+    constructor(location: Location, private element: ElementRef, private oidcSecurityService: OidcSecurityService) {
         this.location = location;
         this.sidebarVisible = false;
     }
@@ -65,5 +67,9 @@ export class NavbarComponent implements OnInit {
             }
         }
         return 'Dashboard';
+    }
+
+    logout() {
+        this.oidcSecurityService.logoff();
     }
 }

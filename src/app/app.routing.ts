@@ -37,7 +37,7 @@ const routes: Routes = [
             }
         ]
     },
-    {path: '**', component: TemplateComponent}
+    {path: 'home', component: TemplateComponent}
 
 ];
 
