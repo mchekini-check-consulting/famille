@@ -15,6 +15,7 @@ export class InfosComponent implements OnInit {
   email: string;
   submitIsDisabled: boolean;
   errMessage: string;
+  errMessageForm: string;
 
   constructor(private userService: FamilleService, public oidcSecurityService: OidcSecurityService) { }
 
@@ -24,21 +25,33 @@ export class InfosComponent implements OnInit {
      return phoneRe.test(digits) && p.length == 10;
   }
 
+  checkValidity(user){
+    this.errMessageForm = "";
+    if(user.nom == "" || user.prenomRepresentant.length == 0 || user.adresse.length == 0){
+        this.errMessageForm = "Veuillez remplir tous les champs !";
+        return false;
+     }
+    return true;
+  }
+
   handleForm(e) {
-     if(e.target.name == "numeroTelephone"){
+    if(e.target.name == "numeroTelephone"){
         this.errMessage = "";
         if(!this.isValid(e.target.value)){
             this.errMessage = "Le numéro de téléphone n'est pas valide !";
             return this.submitIsDisabled = true;
         }
      }
-     this.user[e.target.name] = e.target.value.trim();
-     this.submitIsDisabled = JSON.stringify(this.initialUser) === JSON.stringify(this.user);
+     this.user[e.target.name] = e.target.value;
+     this.submitIsDisabled = JSON.stringify(this.initialUser) === JSON.stringify(this.user) || !this.checkValidity(this.user);
   }
 
   submitInfos() {
     if(!this.isValid(this.user.numeroTelephone)){
        return false;
+    }
+    if(!this.checkValidity(this.user)){
+        return false;
     }
     this.userService.putFamille(this.user)
         .subscribe({
