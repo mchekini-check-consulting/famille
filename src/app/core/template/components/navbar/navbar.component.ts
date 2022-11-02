@@ -1,7 +1,8 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {ROUTES} from "../sidebar/sidebar.component"
 import {Location} from '@angular/common';
-import {OidcSecurityService} from "angular-auth-oidc-client";
+import {OAuthService} from "angular-oauth2-oidc";
+import {filter} from "rxjs/operators";
 
 @Component({
     selector: 'navbar-cmp',
@@ -16,7 +17,7 @@ export class NavbarComponent implements OnInit {
     public name: string;
 
 
-    constructor(location: Location, private element: ElementRef, private oidcSecurityService: OidcSecurityService) {
+    constructor(location: Location, private element: ElementRef, private oauthService: OAuthService) {
         this.location = location;
         this.sidebarVisible = false;
     }
@@ -25,9 +26,13 @@ export class NavbarComponent implements OnInit {
         this.listTitles = ROUTES.filter(listTitle => listTitle);
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
-        this.oidcSecurityService.userData$.subscribe(resp => {
-             this.name = resp.userData.name;
-        });
+        this.oauthService.events
+            .pipe(filter(e => e.type === 'token_received'))
+            .subscribe(_ => {
+                console.log(this.oauthService.getIdentityClaims());
+                this.name = this.oauthService.getIdentityClaims()['name'];
+            });
+
     }
 
     sidebarOpen() {
@@ -73,6 +78,6 @@ export class NavbarComponent implements OnInit {
     }
 
     logout() {
-        this.oidcSecurityService.logoff();
+        this.oauthService.logOut();
     }
 }

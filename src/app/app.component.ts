@@ -1,31 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {OidcSecurityService} from "angular-auth-oidc-client";
+import {authCodeFlowConfig} from "./auth.config";
+import {OAuthService} from "angular-oauth2-oidc";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-    constructor(private oidcSecurityService: OidcSecurityService) {
-
-    }
-
-    ngOnInit() {
-
-
-        this.oidcSecurityService.checkAuth().subscribe(({isAuthenticated, userData, accessToken, idToken}) => {
-            if (!isAuthenticated) this.login();
-        });
-    }
-
-    login() {
-        this.oidcSecurityService.authorize();
-    }
-
-    logout() {
-        this.oidcSecurityService.logoff();
+    constructor(private oauthService: OAuthService) {
+        if (!oauthService.hasValidIdToken()){
+            this.oauthService.configure(authCodeFlowConfig);
+            this.oauthService.loadDiscoveryDocumentAndLogin();
+        }
     }
 
 }
