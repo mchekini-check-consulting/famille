@@ -150,7 +150,6 @@
       }
     }
   },
-  "defaultProject": "lbd-free-angular-cli",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

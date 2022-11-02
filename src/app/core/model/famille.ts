@@ -1,9 +1,8 @@
-export interface NounouModel {
+export class Famille {
     email: string;
     nom: string;
-    prenom: string;
+    prenomRepresentant: string;
     adresse: string;
     numeroTelephone: string;
     pseudo: string;
-
 }
