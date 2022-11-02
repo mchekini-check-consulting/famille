@@ -4,10 +4,11 @@ node("ci-node") {
     }
     stage("Quality Analyses"){
         sh "/opt/sonar-scanner/bin/sonar-scanner \\\n" +
-                "  -Dsonar.projectKey=nounou-ui \\\n" +
+                "  -Dsonar.projectKey=famille-ui \\\n" +
                 "  -Dsonar.sources=. \\\n" +
                 "  -Dsonar.host.url=http://3.87.90.191:11001 \\\n" +
-                "  -Dsonar.login=sqp_aa13d879378f8882902448849bacffd535a4c94e"
+                "  -Dsonar.login=sqp_f2aa22dfc3853804764c5a4fcbf2f05ad6bb7ebe"
+        
     }
 
     stage("build") {
