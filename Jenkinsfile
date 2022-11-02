@@ -2,6 +2,14 @@ node("ci-node") {
     stage("checkout") {
         checkout([$class: 'GitSCM', branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mchekini-check-consulting/famille-ui.git']]])
     }
+    stage("Quality Analyses"){
+        sh "/opt/sonar-scanner/bin/sonar-scanner \\\n" +
+                "  -Dsonar.projectKey=nounou-ui \\\n" +
+                "  -Dsonar.sources=. \\\n" +
+                "  -Dsonar.host.url=http://3.87.90.191:11001 \\\n" +
+                "  -Dsonar.login=sqp_aa13d879378f8882902448849bacffd535a4c94e"
+    }
+
     stage("build") {
         sh "npm install"
         sh "ng build --configuration production"
