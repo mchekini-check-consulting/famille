@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FamilleService } from '../../service/famille.service';//importation du service
 
 @Component({
   selector: 'app-infos',
