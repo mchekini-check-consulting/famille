@@ -27,7 +27,7 @@ node("ci-node") {
             }catch(Exception e){
                 println "Aucun conteneur avec le nom famille-ui n'est présent"
             }
-            sh "sudo docker run --name famille-ui -p 80:80 -d mchekini/famille-ui-prod:1.0"
+            sh "sudo docker run --name famille-ui -p 81:80 -d mchekini/famille-ui-prod:1.0"
         }
     }
 }
