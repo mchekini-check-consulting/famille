@@ -1,0 +1,33 @@
+node("ci-node") {
+    stage("checkout") {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mchekini-check-consulting/famille-ui.git']]])
+    }
+
+    stage("build") {
+        sh "npm install"
+        sh "ng build --configuration production"
+    }
+
+    stage("build docker image") {
+        sh "sudo docker build -t famille-ui-prod ."
+    }
+
+    stage("Push image to Docker hub") {
+        sh "sudo docker login -u mchekini -p jskabyliE"
+        sh "sudo docker tag famille-ui-prod mchekini/famille-ui-prod:1.0"
+        sh "sudo docker push mchekini/famille-ui-prod:1.0"
+    }
+
+    node("prod-node") {
+        stage("deploy") {
+            try{
+                sh "sudo docker stop famille-ui"
+                sh "sudo docker rm famille-ui"
+                sh "sudo docker rmi mchekini/famille-ui-prod:1.0"
+            }catch(Exception e){
+                println "Aucun conteneur avec le nom famille-ui n'est présent"
+            }
+            sh "sudo docker run --name famille-ui -p 81:80 -d mchekini/famille-ui-prod:1.0"
+        }
+    }
+}
