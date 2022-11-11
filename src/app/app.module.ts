@@ -9,6 +9,8 @@ import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { ToastrModule } from "ngx-toastr";
+import { NgxUiLoaderModule } from "ngx-ui-loader";
+
 import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
@@ -22,6 +24,7 @@ import { MatCardModule } from "@angular/material/card";
     MatCardModule,
     OAuthModule.forRoot(),
     ToastrModule.forRoot(),
+    NgxUiLoaderModule,
   ],
   declarations: [AppComponent],
   providers: [],

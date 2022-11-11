@@ -4,6 +4,7 @@ import { Famille } from "../../core/model/famille";
 import { OAuthService } from "angular-oauth2-oidc";
 
 import { ToastrService } from "ngx-toastr";
+import { NgxUiLoaderService } from "ngx-ui-loader";
 
 @Component({
   selector: "app-infos",
@@ -21,7 +22,8 @@ export class InfosComponent implements OnInit {
   constructor(
     private userService: FamilleService,
     public oauthService: OAuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private ngxLoader: NgxUiLoaderService
   ) {}
 
   isValid(p: string) {
@@ -80,28 +82,33 @@ export class InfosComponent implements OnInit {
       );
       return false;
     }
+    this.ngxLoader.start();
     this.userService.putFamille(this.user).subscribe({
       next: (res) => {
         this.toastr.success("Données modifiées avec succès", "Modification");
         this.initialUser = { ...this.user };
         this.submitIsDisabled = true;
-        console.log(res);
+        this.ngxLoader.stop();
       },
       error: (error) => {
         this.toastr.error(
-          "Errur lors de la modification. Veuillez réessayer",
+          "Erreur lors de la modification. Veuillez réessayer",
           "Modification"
         );
         this.submitIsDisabled = false;
         console.error("There was an error!", error);
+        this.ngxLoader.stop();
       },
     });
   }
 
   ngOnInit(): void {
+    this.ngxLoader.start();
+
     this.submitIsDisabled = true;
     this.email = this.oauthService.getIdentityClaims()["email"];
     this.userService.getFamille(this.email).subscribe((data: Famille) => {
+      this.ngxLoader.stop();
       this.user = data;
       this.initialUser = { ...data };
     });
