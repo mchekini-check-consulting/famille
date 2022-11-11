@@ -1,80 +1,109 @@
-import {Component, OnInit} from '@angular/core';
-import {FamilleService} from '../../core/service/famille.service';
-import {Famille} from '../../core/model/famille';
-import {OAuthService} from "angular-oauth2-oidc";
+import { Component, OnInit } from "@angular/core";
+import { FamilleService } from "../../core/service/famille.service";
+import { Famille } from "../../core/model/famille";
+import { OAuthService } from "angular-oauth2-oidc";
+
+import { ToastrService } from "ngx-toastr";
 
 @Component({
-    selector: 'app-infos',
-    templateUrl: './infos.component.html',
-    styleUrls: ['./infos.component.scss']
+  selector: "app-infos",
+  templateUrl: "./infos.component.html",
+  styleUrls: ["./infos.component.scss"],
 })
-
 export class InfosComponent implements OnInit {
-    user: Famille;
-    initialUser: Famille;
-    email: string;
-    submitIsDisabled: boolean;
-    errMessage: string;
-    errMessageForm: string;
+  user: Famille;
+  initialUser: Famille;
+  email: string;
+  submitIsDisabled: boolean;
+  errMessage: string;
+  errMessageForm: string;
 
-    constructor(private userService: FamilleService, public oauthService: OAuthService) {
+  constructor(
+    private userService: FamilleService,
+    public oauthService: OAuthService,
+    private toastr: ToastrService
+  ) {}
+
+  isValid(p: string) {
+    var phoneRe = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/;
+    var digits = p.replace(/\D/g, "");
+    return phoneRe.test(digits) && p.length == 10;
+  }
+
+  checkValidity(user: Famille) {
+    this.errMessageForm = "";
+    if (
+      user.nom == "" ||
+      user.prenomRepresentant.length == 0 ||
+      user.adresse.length == 0
+    ) {
+      this.toastr.warning(
+        "Veuillez vérifier les informations saisies",
+        "Modification"
+      );
+      this.errMessageForm = "Veuillez remplir tous les champs !";
+      return false;
     }
+    return true;
+  }
 
-    isValid(p:string) {
-        var phoneRe = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/;
-        var digits = p.replace(/\D/g, "");
-        return phoneRe.test(digits) && p.length == 10;
+  handleForm(e: any) {
+    if (e.target.name == "numeroTelephone") {
+      this.errMessage = "";
+      if (!this.isValid(e.target.value)) {
+        this.toastr.warning(
+          "Veuillez vérifier le format du n° de téléphone",
+          "Modification"
+        );
+        this.errMessage = "Le numéro de téléphone n'est pas valide !";
+        return (this.submitIsDisabled = true);
+      }
     }
+    this.user[e.target.name] = e.target.value;
+    this.submitIsDisabled =
+      JSON.stringify(this.initialUser) === JSON.stringify(this.user) ||
+      !this.checkValidity(this.user);
+  }
 
-    checkValidity(user: Famille) {
-        this.errMessageForm = "";
-        if (user.nom == "" || user.prenomRepresentant.length == 0 || user.adresse.length == 0) {
-            this.errMessageForm = "Veuillez remplir tous les champs !";
-            return false;
-        }
-        return true;
+  submitInfos() {
+    if (!this.isValid(this.user.numeroTelephone)) {
+      this.toastr.error(
+        "Veuillez vérifier le format du n° de téléphone",
+        "Modification"
+      );
+      return false;
     }
-
-    handleForm(e: any) {
-        if (e.target.name == "numeroTelephone") {
-            this.errMessage = "";
-            if (!this.isValid(e.target.value)) {
-                this.errMessage = "Le numéro de téléphone n'est pas valide !";
-                return this.submitIsDisabled = true;
-            }
-        }
-        this.user[e.target.name] = e.target.value;
-        this.submitIsDisabled = JSON.stringify(this.initialUser) === JSON.stringify(this.user) || !this.checkValidity(this.user);
+    if (!this.checkValidity(this.user)) {
+      this.toastr.error(
+        "Veuillez vérifier les informations saisies",
+        "Modification"
+      );
+      return false;
     }
-
-    submitInfos() {
-        if (!this.isValid(this.user.numeroTelephone)) {
-            return false;
-        }
-        if (!this.checkValidity(this.user)) {
-            return false;
-        }
-        this.userService.putFamille(this.user)
-            .subscribe({
-                next: res => {
-                    this.submitIsDisabled = true;
-                    console.log(res);
-                },
-                error: error => {
-                    this.submitIsDisabled = false;
-                    console.error('There was an error!', error);
-                }
-            });
-    }
-
-    ngOnInit(): void {
+    this.userService.putFamille(this.user).subscribe({
+      next: (res) => {
+        this.toastr.success("Données modifiées avec succès", "Modification");
+        this.initialUser = { ...this.user };
         this.submitIsDisabled = true;
-        this.email = this.oauthService.getIdentityClaims()['email'];
-        this.userService.getFamille(this.email).subscribe((data: Famille) => {
-            this.user = data;
-            this.initialUser = {...data};
-        });
+        console.log(res);
+      },
+      error: (error) => {
+        this.toastr.error(
+          "Errur lors de la modification. Veuillez réessayer",
+          "Modification"
+        );
+        this.submitIsDisabled = false;
+        console.error("There was an error!", error);
+      },
+    });
+  }
 
-
-    }
+  ngOnInit(): void {
+    this.submitIsDisabled = true;
+    this.email = this.oauthService.getIdentityClaims()["email"];
+    this.userService.getFamille(this.email).subscribe((data: Famille) => {
+      this.user = data;
+      this.initialUser = { ...data };
+    });
+  }
 }
