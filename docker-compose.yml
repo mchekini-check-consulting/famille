@@ -1,0 +1,31 @@
+version: '2'
+services:
+#  api:
+#    image: mchekini/api:1.0
+#    container_name: product
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_PROFILES_ACTIVE: prod
+#
+#  famille:
+#    container_name: famille
+#    image: mchekini/famille:1.0
+#    ports:
+#      - "80:80"
+#
+#  nounou:
+#    container_name: nounou
+#    image: mchekini/nounou:1.0
+#    ports:
+#      - "81:80"
+
+  keycloak:
+    image: jboss/keycloak:12.0.1
+    container_name: keycloak
+    ports:
+      - "10000:8080"
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+    user: root
