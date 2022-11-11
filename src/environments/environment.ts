@@ -6,3 +6,7 @@
 export const environment = {
   production: false,
 };
+
+export const apisUrls = {
+  familleApiUrl: '/api/v1/famille'
+};
