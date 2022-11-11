@@ -37,7 +37,7 @@ const routes: Routes = [
             }
         ]
     },
-    {path: '**', component: TemplateComponent}
+    {path: 'home', component: TemplateComponent}
 
 ];
 
@@ -45,11 +45,11 @@ const routes: Routes = [
     imports: [
         CommonModule,
         BrowserModule,
-        RouterModule.forRoot(routes, {
-            useHash: true
-        })
+        RouterModule.forRoot(routes)
     ],
-    exports: [],
+    exports: [
+        RouterModule
+    ],
 })
 export class AppRoutingModule {
 }

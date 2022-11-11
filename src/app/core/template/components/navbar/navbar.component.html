@@ -41,7 +41,14 @@
                         <p class="hidden-lg hidden-md">Search</p>
                     </a>
                 </li>
+                <li>
+                    <a href="#">
+                        <p style="position: relative; left: 180%;">Bienvenue : {{name}}</p>
+                    </a>
+                </li>
             </ul>
+
+
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -67,7 +74,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" (click)="logout()">
                         Log out
                     </a>
                 </li>

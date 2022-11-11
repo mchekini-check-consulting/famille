@@ -1,26 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
+import { Component, OnInit } from "@angular/core";
+import { authCodeFlowConfig } from "./auth.config";
+import { OAuthService } from "angular-oauth2-oidc";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
-export class AppComponent implements OnInit {
-
-     constructor(public location: Location) {}
-
-    ngOnInit(){
+export class AppComponent {
+  constructor(private oauthService: OAuthService) {
+    if (!oauthService.hasValidIdToken()) {
+      this.oauthService.configure(authCodeFlowConfig);
+      this.oauthService.loadDiscoveryDocumentAndLogin();
     }
-
-    isMap(path){
-      var titlee = this.location.prepareExternalUrl(this.location.path());
-      titlee = titlee.slice( 1 );
-      if(path == titlee){
-        return false;
-      }
-      else {
-        return true;
-      }
-    }
+  }
 }

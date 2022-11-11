@@ -25,7 +25,8 @@
               "node_modules/animate.css/animate.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/sass/light-bootstrap-dashboard.scss",
-              "src/assets/css/demo.css"
+              "src/assets/css/demo.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -71,7 +72,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "famille:build"
+            "browserTarget": "famille:build",
+            "proxyConfig": "./proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -149,7 +151,6 @@
       }
     }
   },
-  "defaultProject": "lbd-free-angular-cli",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
