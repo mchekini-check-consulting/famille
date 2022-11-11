@@ -1,133 +1,120 @@
-<div class="main-content" >
-    <div class="container-fluid">
-        <div class="row">
-<<<<<<< HEAD
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">Mes informations</h4>
-=======
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">Editer mon profil</h4>
->>>>>>> 307e54f50243dc38c006d5c844bb882a5fa21c8d
-                    </div>
-                    <div class="content">
-                        <form>
-                            <div class="row">
-<<<<<<< HEAD
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Pseudo</label>
-                                        <input type="text" class="form-control" disabled placeholder="Nom" value="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Adresse mail</label>
-                                        <input type="email" class="form-control" placeholder="Adresse mail" value="">
-                                    </div>
-                                </div>
-                               
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Nom</label>
-                                        <input type="text" class="form-control" placeholder="Nom" value="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Prénom</label>
-                                        <input type="text" class="form-control" placeholder="Last Name" value="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Numéro de téléphone</label>
-                                    <input type="tel" class="form-control" placeholder="Numéro de téléphone"
-                                        >
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Address</label>
-                                        <input type="text" class="form-control" placeholder="Home Address" value="">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-info btn-fill pull-right">Enregistrer</button>
-=======
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label>Pseudo</label>
-                                        <input name="pseudo" disabled type="text" class="form-control" placeholder="Votre pseudo" [value]="user.pseudo">
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="form-group">
-                                        <label>Adresse Email</label>
-                                        <input name="email" disabled type="email" class="form-control" placeholder="Votre adresse Email" [value]="user.email">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Nom</label>
-                                        <input name="nom" type="text" class="form-control" placeholder="Votre nom" [value]="user.nom" (change)="handleForm($event)">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Prénom</label>
-                                        <input name="prenomRepresentant" type="text" class="form-control" placeholder="Votre prénom" [value]="user.prenomRepresentant" (change)="handleForm($event)">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>N° Téléphone</label>
-                                        <input name="numeroTelephone" type="text" class="form-control" placeholder="Votre n° de téléphone" [value]="user.numeroTelephone" (change)="handleForm($event)">
-                                    </div>
-                                    <p class="error">{{errMessage}}</p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Addresse</label>
-                                        <input name="adresse" type="text" class="form-control" placeholder="Votre adresse" [value]="user.adresse" (change)="handleForm($event)">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4"><p class="error">{{errMessageForm}}</p></div>
-                                <div class="col-md-8">
-                                    <button type="button" [disabled]="submitIsDisabled" class="btn btn-info btn-fill pull-right" (click)="submitInfos()">Enregistrer</button>
-                                </div>
-                            </div>
->>>>>>> 307e54f50243dc38c006d5c844bb882a5fa21c8d
-                            <div class="clearfix"></div>
-                        </form>
-                    </div>
+<div class="main-content" ngxUiLoaderBlurred>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Editer mon profil</h4>
+          </div>
+          <div class="content">
+            <form>
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <label>Pseudo</label>
+                    <input
+                      name="pseudo"
+                      disabled
+                      type="text"
+                      class="form-control"
+                      placeholder="Votre pseudo"
+                      [value]="user.pseudo"
+                    />
+                  </div>
                 </div>
-            </div>
-<<<<<<< HEAD
-           
-            
-=======
->>>>>>> 307e54f50243dc38c006d5c844bb882a5fa21c8d
-        </div>
-    </div>
-</div>
+                <div class="col-md-7">
+                  <div class="form-group">
+                    <label>Adresse Email</label>
+                    <input
+                      name="email"
+                      disabled
+                      type="email"
+                      class="form-control"
+                      placeholder="Votre adresse Email"
+                      [value]="user.email"
+                    />
+                  </div>
+                </div>
+              </div>
 
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Nom</label>
+                    <input
+                      name="nom"
+                      type="text"
+                      class="form-control"
+                      placeholder="Votre nom"
+                      [value]="user.nom"
+                      (change)="handleForm($event)"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Prénom</label>
+                    <input
+                      name="prenomRepresentant"
+                      type="text"
+                      class="form-control"
+                      placeholder="Votre prénom"
+                      [value]="user.prenomRepresentant"
+                      (change)="handleForm($event)"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>N° Téléphone</label>
+                    <input
+                      name="numeroTelephone"
+                      type="text"
+                      class="form-control"
+                      placeholder="Votre n° de téléphone"
+                      [value]="user.numeroTelephone"
+                      (change)="handleForm($event)"
+                    />
+                  </div>
+                  <p class="error">{{ errMessage }}</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Addresse</label>
+                    <input
+                      name="adresse"
+                      type="text"
+                      class="form-control"
+                      placeholder="Votre adresse"
+                      [value]="user.adresse"
+                      (change)="handleForm($event)"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <p class="error">{{ errMessageForm }}</p>
+                </div>
+                <div class="col-md-8">
+                  <button
+                    type="button"
+                    [disabled]="submitIsDisabled"
+                    class="btn btn-info btn-fill pull-right"
+                    (click)="submitInfos()"
+                  >
+                    Enregistrer
+                  </button>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

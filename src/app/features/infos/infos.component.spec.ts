@@ -1,16 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { InfosComponent } from './infos.component';
+import { InfosComponent } from "./infos.component";
 
-describe('InfosComponent', () => {
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+
+describe("InfosComponent", () => {
   let component: InfosComponent;
   let fixture: ComponentFixture<InfosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InfosComponent ]
-    })
-    .compileComponents();
+      declarations: [InfosComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +21,7 @@ describe('InfosComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
