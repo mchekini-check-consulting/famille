@@ -10,8 +10,8 @@ import { familleApiUrl } from "../common";
 export class FamilleService {
   constructor(private http: HttpClient) {}
 
-  getFamille(email: string): Observable<Famille> {
-    return this.http.get<Famille>(familleApiUrl + "/getById/" + email);
+  getFamille(): Observable<Famille> {
+    return this.http.get<Famille>(familleApiUrl + "/get");
   }
 
   putFamille(data: Famille) {
