@@ -7,7 +7,7 @@ import { CoreModule } from "./core/core.module";
 import { OAuthModule } from "angular-oauth2-oidc";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpRequestInterceptor } from "./core/interceptor/httpRequestInerceptor";
+import { HttpRequestInterceptor } from "./core/interceptor/httpRequestInterceptor";
 
 import { ToastrModule } from "ngx-toastr";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
