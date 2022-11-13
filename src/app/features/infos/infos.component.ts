@@ -106,8 +106,7 @@ export class InfosComponent implements OnInit {
     this.ngxLoader.start();
 
     this.submitIsDisabled = true;
-    this.email = this.oauthService.getIdentityClaims()["email"];
-    this.userService.getFamille(this.email).subscribe((data: Famille) => {
+    this.userService.getFamille().subscribe((data: Famille) => {
       this.ngxLoader.stop();
       this.user = data;
       this.initialUser = { ...data };
