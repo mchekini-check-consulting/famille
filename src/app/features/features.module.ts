@@ -6,6 +6,7 @@ import { RechercheComponent } from "./recherche/recherche.component";
 import { MessagerieComponent } from "./messagerie/messagerie.component";
 import { HistoriqueComponent } from "./historique/historique.component";
 import { InfosComponent } from "./infos/infos.component";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,6 @@ import { InfosComponent } from "./infos/infos.component";
     InfosComponent,
   ],
 
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule],
 })
 export class FeaturesModule {}
