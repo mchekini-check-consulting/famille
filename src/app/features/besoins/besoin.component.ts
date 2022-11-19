@@ -96,9 +96,9 @@ export class BesoinComponent implements OnInit {
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return value.toString();
+          return value.toString() + "h";
         case LabelType.High:
-          return value.toString();
+          return value.toString() + "h";
         default:
           return "";
       }
