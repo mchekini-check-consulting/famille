@@ -7,6 +7,7 @@ import { MessagerieComponent } from "./messagerie/messagerie.component";
 import { HistoriqueComponent } from "./historique/historique.component";
 import { InfosComponent } from "./infos/infos.component";
 import { MatCardModule } from "@angular/material/card";
+import { NgxSliderModule } from "@angular-slider/ngx-slider";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,6 @@ import { MatCardModule } from "@angular/material/card";
     InfosComponent,
   ],
 
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, NgxSliderModule],
 })
 export class FeaturesModule {}

@@ -1,10 +1,129 @@
-<h4>Je déclare mes besoins</h4>
+<h4 style="text-align: center">Je déclare mes besoins</h4>
 
-<mat-card>
-  <mat-card-title>Actions Buttons</mat-card-title>
-  <mat-card-subtitle>Start</mat-card-subtitle>
-  <mat-card-actions>
-    <button mat-button>7h</button>
-    <button mat-button>8h</button>
-  </mat-card-actions>
+<mat-card class="card-demo">
+  <mat-card-content class="containerX">
+    <div style="height: 100%">
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr repeat(3, 2fr);
+          grid-column-gap: 10px;
+          grid-row-gap: 10px;
+          text-align: center;
+        "
+      >
+        <div></div>
+        <div
+          class="card"
+          *ngFor="let tile of headers"
+          [style.background]="tile.color"
+          style="
+            margin-bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          <div class="content">{{ tile.text }}</div>
+        </div>
+        <ng-container *ngFor="let jour of jours">
+          <div
+            class="card"
+            [style.background]="jour.color"
+            style="
+              margin-bottom: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <div class="content">{{ jour.text }}</div>
+          </div>
+          <div
+            class="card"
+            id="{{ jour.id }}mat"
+            style="margin-bottom: 0"
+            [style.background]="jour.bgData"
+          >
+            <div class="content">
+              <label
+                class="{{ mapClass[getValue(jour.id.toString() + 'mat')] }}"
+                ><input
+                  type="checkbox"
+                  [checked]="getValue(jour.id.toString() + 'mat')"
+              /></label>
+            </div>
+            <hr style="margin: 0" />
+            <div
+              *ngIf="getValue(jour.id.toString() + 'mat')"
+              class="custom-slider"
+              style="width: 80%; margin-left: 10%; margin: 15px"
+            >
+              <ngx-slider
+                [(value)]="valueMat"
+                [(highValue)]="highValueMat"
+                [options]="optionsMat"
+              ></ngx-slider>
+            </div>
+          </div>
+          <!---------------------------->
+          <div
+            class="card"
+            id="{{ jour.id }}mid"
+            style="margin-bottom: 0"
+            [style.background]="jour.bgData"
+          >
+            <div class="content">
+              <label
+                class="{{ mapClass[getValue(jour.id.toString() + 'mid')] }}"
+                ><input
+                  type="checkbox"
+                  [checked]="getValue(jour.id.toString() + 'mid')"
+              /></label>
+            </div>
+            <hr style="margin: 0" />
+            <div
+              *ngIf="getValue(jour.id.toString() + 'mid')"
+              class="custom-slider"
+              style="width: 80%; margin-left: 10%; margin: 15px"
+            >
+              <ngx-slider
+                [(value)]="valueMid"
+                [(highValue)]="highValueMid"
+                [options]="optionsMid"
+              ></ngx-slider>
+            </div>
+          </div>
+          <!----------------------------------->
+          <div
+            class="card"
+            id="{{ jour.id }}soi"
+            style="margin-bottom: 0"
+            [style.background]="jour.bgData"
+          >
+            <div class="content">
+              <label
+                class="{{ mapClass[getValue(jour.id.toString() + 'soi')] }}"
+                ><input
+                  type="checkbox"
+                  [checked]="getValue(jour.id.toString() + 'soi')"
+              /></label>
+            </div>
+            <hr style="margin: 0" />
+            <div
+              *ngIf="getValue(jour.id.toString() + 'soi')"
+              class="custom-slider"
+              style="width: 80%; margin-left: 10%; margin: 15px"
+            >
+              <ngx-slider
+                [(value)]="valueSoi"
+                [(highValue)]="highValueSoi"
+                [options]="optionsSoi"
+              ></ngx-slider>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </mat-card-content>
 </mat-card>
