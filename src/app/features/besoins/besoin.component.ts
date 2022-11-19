@@ -16,6 +16,8 @@ export interface Jours {
 export interface Data {
   id: string;
   value: boolean;
+  lowValue: number;
+  highValue: number;
 }
 
 @Component({
@@ -35,6 +37,7 @@ export interface Data {
 })
 export class BesoinComponent implements OnInit {
   result: boolean;
+  resultVal: number;
 
   constructor() {}
 
@@ -62,10 +65,10 @@ export class BesoinComponent implements OnInit {
   };
 
   data: Data[] = [
-    { id: "0mat", value: false },
-    { id: "1mat", value: true },
-    { id: "3soi", value: true },
-    { id: "4mid", value: true },
+    { id: "0mat", value: true, lowValue: 8, highValue: 11 },
+    { id: "1mat", value: true, lowValue: 7, highValue: 12 },
+    { id: "3soi", value: true, lowValue: 19, highValue: 22 },
+    { id: "4mid", value: true, lowValue: 12, highValue: 17 },
   ];
 
   getValue(id: string): boolean {
@@ -78,12 +81,25 @@ export class BesoinComponent implements OnInit {
     return this.result;
   }
 
-  valueMat: number = 7;
-  highValueMat: number = 12;
-  valueMid: number = 12;
-  highValueMid: number = 18;
-  valueSoi: number = 18;
-  highValueSoi: number = 22;
+  getLowValue(id: string): number {
+    this.resultVal = 0;
+    this.data.map((e) => {
+      if (e.id == id) {
+        this.resultVal = e.lowValue;
+      }
+    });
+    return this.resultVal;
+  }
+
+  getHighValue(id: string): number {
+    this.resultVal = 0;
+    this.data.map((e) => {
+      if (e.id == id) {
+        this.resultVal = e.highValue;
+      }
+    });
+    return this.resultVal;
+  }
 
   options: Options = {
     step: 1,

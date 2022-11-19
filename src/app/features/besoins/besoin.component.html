@@ -60,8 +60,8 @@
               style="width: 80%; margin-left: 10%; margin: 15px"
             >
               <ngx-slider
-                [(value)]="valueMat"
-                [(highValue)]="highValueMat"
+                [value]="getLowValue(jour.id.toString() + 'mat')"
+                [highValue]="getHighValue(jour.id.toString() + 'mat')"
                 [options]="optionsMat"
               ></ngx-slider>
             </div>
@@ -88,8 +88,8 @@
               style="width: 80%; margin-left: 10%; margin: 15px"
             >
               <ngx-slider
-                [(value)]="valueMid"
-                [(highValue)]="highValueMid"
+                [value]="getLowValue(jour.id.toString() + 'mid')"
+                [highValue]="getHighValue(jour.id.toString() + 'mid')"
                 [options]="optionsMid"
               ></ngx-slider>
             </div>
@@ -116,8 +116,8 @@
               style="width: 80%; margin-left: 10%; margin: 15px"
             >
               <ngx-slider
-                [(value)]="valueSoi"
-                [(highValue)]="highValueSoi"
+                [value]="getLowValue(jour.id.toString() + 'soi')"
+                [highValue]="getHighValue(jour.id.toString() + 'soi')"
                 [options]="optionsSoi"
               ></ngx-slider>
             </div>
