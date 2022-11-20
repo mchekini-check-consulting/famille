@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   Options,
   LabelType,
@@ -71,12 +71,7 @@ export class BesoinComponent implements OnInit {
     false: "btn btn-default",
   };
 
-  data: Data[] = [
-    { id: "0mat", value: false, lowValue: 8, highValue: 11 },
-    { id: "1mat", value: true, lowValue: 7, highValue: 12 },
-    { id: "3soi", value: true, lowValue: 19, highValue: 22 },
-    { id: "4mid", value: true, lowValue: 12, highValue: 17 },
-  ];
+  data: Data[] = [];
 
   getValue(id: string): boolean {
     this.result = false;
