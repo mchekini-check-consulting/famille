@@ -1,5 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { Options, LabelType } from "@angular-slider/ngx-slider";
+import { Component, OnInit, EventEmitter } from "@angular/core";
+import {
+  Options,
+  LabelType,
+  ChangeContext,
+  PointerType,
+} from "@angular-slider/ngx-slider";
+
+import { ToastrService } from "ngx-toastr";
 
 export interface Header {
   color: string;
@@ -39,7 +46,7 @@ export class BesoinComponent implements OnInit {
   result: boolean;
   resultVal: number;
 
-  constructor() {}
+  constructor(private toastr: ToastrService) {}
 
   ngOnInit(): void {}
 
@@ -65,7 +72,7 @@ export class BesoinComponent implements OnInit {
   };
 
   data: Data[] = [
-    { id: "0mat", value: true, lowValue: 8, highValue: 11 },
+    { id: "0mat", value: false, lowValue: 8, highValue: 11 },
     { id: "1mat", value: true, lowValue: 7, highValue: 12 },
     { id: "3soi", value: true, lowValue: 19, highValue: 22 },
     { id: "4mid", value: true, lowValue: 12, highValue: 17 },
@@ -99,6 +106,36 @@ export class BesoinComponent implements OnInit {
       }
     });
     return this.resultVal;
+  }
+
+  handleBesoin(id: string, lowValue: number, highValue: number): void {
+    const index = this.data.findIndex((e) => e.id == id);
+    if (index == -1) {
+      this.data.push({ id, value: true, lowValue, highValue });
+    } else {
+      this.data[index].value = !this.data[index].value;
+    }
+  }
+
+  getChangeContextString(changeContext: ChangeContext, id: string): void {
+    const index = this.data.findIndex((e) => e.id == id);
+    if (index == -1) {
+      // Ce cas ne doit pas survenir puisque si le slide est visible donc l'id recherché existe dansle tab data
+      this.toastr.error(
+        "Une erreur inconnue est survenue. Veuillez réessayer ou réactualiser la page !",
+        "Modification"
+      );
+    } else {
+      if (changeContext.value != changeContext.highValue) {
+        this.data[index].lowValue = changeContext.value;
+        this.data[index].highValue = changeContext.highValue;
+      } else {
+        // Eviter que les deux valeurs soient identiques
+        let val = this.data[index].lowValue;
+        this.data[index].lowValue = this.data[index].highValue;
+        this.data[index].highValue = val;
+      }
+    }
   }
 
   options: Options = {

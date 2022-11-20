@@ -51,6 +51,7 @@
                 ><input
                   type="checkbox"
                   [checked]="getValue(jour.id.toString() + 'mat')"
+                  (click)="handleBesoin(jour.id.toString() + 'mat', 7, 12)"
               /></label>
             </div>
             <hr style="margin: 0" />
@@ -63,6 +64,9 @@
                 [value]="getLowValue(jour.id.toString() + 'mat')"
                 [highValue]="getHighValue(jour.id.toString() + 'mat')"
                 [options]="optionsMat"
+                (userChange)="
+                  getChangeContextString($event, jour.id.toString() + 'mat')
+                "
               ></ngx-slider>
             </div>
           </div>
@@ -79,6 +83,7 @@
                 ><input
                   type="checkbox"
                   [checked]="getValue(jour.id.toString() + 'mid')"
+                  (click)="handleBesoin(jour.id.toString() + 'mid', 12, 18)"
               /></label>
             </div>
             <hr style="margin: 0" />
@@ -91,6 +96,9 @@
                 [value]="getLowValue(jour.id.toString() + 'mid')"
                 [highValue]="getHighValue(jour.id.toString() + 'mid')"
                 [options]="optionsMid"
+                (userChange)="
+                  getChangeContextString($event, jour.id.toString() + 'mid')
+                "
               ></ngx-slider>
             </div>
           </div>
@@ -107,6 +115,7 @@
                 ><input
                   type="checkbox"
                   [checked]="getValue(jour.id.toString() + 'soi')"
+                  (click)="handleBesoin(jour.id.toString() + 'soi', 18, 22)"
               /></label>
             </div>
             <hr style="margin: 0" />
@@ -119,6 +128,9 @@
                 [value]="getLowValue(jour.id.toString() + 'soi')"
                 [highValue]="getHighValue(jour.id.toString() + 'soi')"
                 [options]="optionsSoi"
+                (userChange)="
+                  getChangeContextString($event, jour.id.toString() + 'soi')
+                "
               ></ngx-slider>
             </div>
           </div>
