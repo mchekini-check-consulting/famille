@@ -7,6 +7,8 @@ import {
 } from "@angular-slider/ngx-slider";
 
 import { ToastrService } from "ngx-toastr";
+import { BesoinsService } from "../../core/service/besoins.service";
+import { BesoinsDay } from "app/core/model/besoins";
 
 export interface Header {
   color: string;
@@ -21,7 +23,9 @@ export interface Jours {
 }
 
 export interface Data {
+  id_besoin: string;
   id: string;
+  jour: number;
   value: boolean;
   lowValue: number;
   highValue: number;
@@ -45,10 +49,51 @@ export interface Data {
 export class BesoinComponent implements OnInit {
   result: boolean;
   resultVal: number;
+  data: Data[] = [];
 
-  constructor(private toastr: ToastrService) {}
+  constructor(
+    private toastr: ToastrService,
+    private besoinService: BesoinsService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.besoinService.getBesoins().subscribe((resp: any) => {
+      this.data = this.data.filter((e) => !e.value); // Supprimer toutes les données validées
+      resp.map((v) => {
+        if (v.besoin_matin_debut != null) {
+          this.data.push({
+            id_besoin: v.id_besoin,
+            id: v.jour.toString() + "mat",
+            jour: v.jour,
+            value: true,
+            lowValue: Number(v.besoin_matin_debut.substring(0, 2)),
+            highValue: Number(v.besoin_matin_fin.substring(0, 2)),
+          });
+        }
+
+        if (v.besoin_midi_debut != null) {
+          this.data.push({
+            id_besoin: v.id_besoin,
+            id: v.jour.toString() + "mid",
+            jour: v.jour,
+            value: true,
+            lowValue: Number(v.besoin_midi_debut.substring(0, 2)),
+            highValue: Number(v.besoin_midi_fin.substring(0, 2)),
+          });
+        }
+        if (v.besoin_soir_debut != null) {
+          this.data.push({
+            id_besoin: v.id_besoin,
+            id: v.jour.toString() + "soi",
+            jour: v.jour,
+            value: true,
+            lowValue: Number(v.besoin_soir_debut.substring(0, 2)),
+            highValue: Number(v.besoin_soir_fin.substring(0, 2)),
+          });
+        }
+      });
+    });
+  }
 
   headers: Header[] = [
     { text: "Matin", color: "lightgreen" },
@@ -70,8 +115,6 @@ export class BesoinComponent implements OnInit {
     true: "btn btn-success active",
     false: "btn btn-default",
   };
-
-  data: Data[] = [];
 
   getValue(id: string): boolean {
     this.result = false;
@@ -103,12 +146,155 @@ export class BesoinComponent implements OnInit {
     return this.resultVal;
   }
 
-  handleBesoin(id: string, lowValue: number, highValue: number): void {
-    const index = this.data.findIndex((e) => e.id == id);
+  randomString(length: number): string {
+    var randomChars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    var result = "";
+    for (var i = 0; i < length; i++) {
+      result += randomChars.charAt(
+        Math.floor(Math.random() * randomChars.length)
+      );
+    }
+    return result;
+  }
+
+  handleBesoin(
+    id: string,
+    lowValue: number,
+    highValue: number,
+    updateRange: boolean
+  ): void {
+    const jour = +id[0];
+    const index = this.data.findIndex((e) => e.jour == jour);
+    const per = id.slice(1);
     if (index == -1) {
-      this.data.push({ id, value: true, lowValue, highValue });
+      // Insérer un nouveau besoin pour une journée qui n'a aucun besoin exprimé
+      const besoin = {
+        id_besoin: this.randomString(6),
+        jour,
+        besoin_matin_debut: per == "mat" ? lowValue : null,
+        besoin_matin_fin: per == "mat" ? highValue : null,
+        besoin_midi_debut: per == "mid" ? lowValue : null,
+        besoin_midi_fin: per == "mid" ? highValue : null,
+        besoin_soir_debut: per == "soi" ? lowValue : null,
+        besoin_soir_fin: per == "soi" ? highValue : null,
+      };
+      this.besoinService.createBesoinDay(besoin).subscribe(() =>
+        this.data.push({
+          id_besoin: besoin.id_besoin,
+          id,
+          jour,
+          value: true,
+          lowValue,
+          highValue,
+        })
+      );
     } else {
-      this.data[index].value = !this.data[index].value;
+      // Il existe au moins un besoin exprimé pour la journée
+      const index2 = this.data.findIndex((e) => e.id == id);
+      if (index2 == -1 || updateRange) {
+        // Insérer un nouveau besoin pour une journée qui a déja un besoin
+        const localData = {
+          id_besoin: this.data[index].id_besoin, // Avoir le même id pour le même jour
+          id,
+          jour,
+          value: true,
+          lowValue,
+          highValue,
+        };
+
+        const id_besoin = this.data[index].id_besoin;
+
+        switch (per) {
+          case "mat":
+            const besoinMat = {
+              id_besoin,
+              jour,
+              besoin_matin_debut: lowValue,
+              besoin_matin_fin: highValue,
+              type: "matin",
+            };
+            this.besoinService
+              .createBesoinMatin(besoinMat)
+              .subscribe(() => this.data.push(localData));
+            break;
+          case "mid":
+            const besoinMidi = {
+              id_besoin,
+              jour,
+              besoin_midi_debut: lowValue,
+              besoin_midi_fin: highValue,
+              type: "midi",
+            };
+            this.besoinService
+              .createBesoinMidi(besoinMidi)
+              .subscribe(() => this.data.push(localData));
+            break;
+          case "soi":
+            const besoinSoir = {
+              id_besoin,
+              jour,
+              besoin_soir_debut: lowValue,
+              besoin_soir_fin: highValue,
+              type: "soir",
+            };
+            this.besoinService
+              .createBesoinSoir(besoinSoir)
+              .subscribe(() => this.data.push(localData));
+            break;
+          default:
+            console.log("Erreur inattendue");
+        }
+      } else {
+        // Modifier un besoin (le supprimer de la BDD)
+        const id_besoin = this.data[index].id_besoin;
+
+        switch (per) {
+          case "mat":
+            const besoinMat = {
+              id_besoin,
+              jour,
+              besoin_matin_debut: null,
+              besoin_matin_fin: null,
+              type: "matin",
+            };
+            this.besoinService
+              .createBesoinMatin(besoinMat)
+              .subscribe(
+                () => (this.data[index2].value = !this.data[index2].value)
+              );
+            break;
+          case "mid":
+            const besoinMidi = {
+              id_besoin,
+              jour,
+              besoin_midi_debut: null,
+              besoin_midi_fin: null,
+              type: "midi",
+            };
+            this.besoinService
+              .createBesoinMidi(besoinMidi)
+              .subscribe(
+                () => (this.data[index2].value = !this.data[index2].value)
+              );
+            break;
+          case "soi":
+            const besoinSoir = {
+              id_besoin,
+              jour,
+              besoin_soir_debut: null,
+              besoin_soir_fin: null,
+              type: "soir",
+            };
+            this.besoinService
+              .createBesoinSoir(besoinSoir)
+              .subscribe(
+                () => (this.data[index2].value = !this.data[index2].value)
+              );
+            break;
+          default:
+            console.log("Erreur inattendue");
+        }
+      }
     }
   }
 
@@ -121,6 +307,7 @@ export class BesoinComponent implements OnInit {
         "Modification"
       );
     } else {
+      this.handleBesoin(id, changeContext.value, changeContext.highValue, true);
       if (changeContext.value != changeContext.highValue) {
         this.data[index].lowValue = changeContext.value;
         this.data[index].highValue = changeContext.highValue;

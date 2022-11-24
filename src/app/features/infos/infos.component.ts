@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FamilleService } from "../../core/service/famille.service";
+import { InfosService } from "../../core/service/famille.service";
 import { Famille } from "../../core/model/famille";
 import { OAuthService } from "angular-oauth2-oidc";
 
@@ -19,7 +19,7 @@ export class InfosComponent implements OnInit {
   errMessageForm: string;
 
   constructor(
-    private userService: FamilleService,
+    private userService: InfosService,
     public oauthService: OAuthService,
     private toastr: ToastrService
   ) {}
@@ -81,7 +81,7 @@ export class InfosComponent implements OnInit {
       return false;
     }
 
-    this.userService.putFamille(this.user).subscribe({
+    this.userService.putInfosFamille(this.user).subscribe({
       next: (res) => {
         this.toastr.success("Données modifiées avec succès", "Modification");
         this.initialUser = { ...this.user };
@@ -100,7 +100,7 @@ export class InfosComponent implements OnInit {
 
   ngOnInit(): void {
     this.submitIsDisabled = true;
-    this.userService.getFamille().subscribe((data: Famille) => {
+    this.userService.getInfosFamille().subscribe((data: Famille) => {
       this.user = data;
       this.initialUser = { ...data };
     });
