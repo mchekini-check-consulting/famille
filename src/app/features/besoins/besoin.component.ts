@@ -157,6 +157,19 @@ export class BesoinComponent implements OnInit {
     return result;
   }
 
+  updateData(
+    index: number,
+    lowValue: number,
+    highValue: number,
+    localData: Data
+  ): void {
+    if (index == -1) this.data.push(localData);
+    else {
+      this.data[index].lowValue = lowValue;
+      this.data[index].highValue = highValue;
+    }
+  }
+
   handleBesoin(
     id: string,
     lowValue: number,
@@ -190,19 +203,18 @@ export class BesoinComponent implements OnInit {
       );
     } else {
       // Il existe au moins un besoin exprimé pour la journée
+      const id_besoin = this.data[index].id_besoin;
       const index2 = this.data.findIndex((e) => e.id == id);
       if (index2 == -1 || updateRange) {
         // Insérer un nouveau besoin pour une journée qui a déja un besoin
         const localData = {
-          id_besoin: this.data[index].id_besoin, // Avoir le même id pour le même jour
+          id_besoin, // Avoir le même id pour le même jour
           id,
           jour,
           value: true,
           lowValue,
           highValue,
         };
-
-        const id_besoin = this.data[index].id_besoin;
 
         switch (per) {
           case "mat":
@@ -215,7 +227,9 @@ export class BesoinComponent implements OnInit {
             };
             this.besoinService
               .createBesoinMatin(besoinMat)
-              .subscribe(() => this.data.push(localData));
+              .subscribe(() =>
+                this.updateData(index2, lowValue, highValue, localData)
+              );
             break;
           case "mid":
             const besoinMidi = {
@@ -227,7 +241,9 @@ export class BesoinComponent implements OnInit {
             };
             this.besoinService
               .createBesoinMidi(besoinMidi)
-              .subscribe(() => this.data.push(localData));
+              .subscribe(() =>
+                this.updateData(index2, lowValue, highValue, localData)
+              );
             break;
           case "soi":
             const besoinSoir = {
@@ -239,12 +255,16 @@ export class BesoinComponent implements OnInit {
             };
             this.besoinService
               .createBesoinSoir(besoinSoir)
-              .subscribe(() => this.data.push(localData));
+              .subscribe(() =>
+                this.updateData(index2, lowValue, highValue, localData)
+              );
             break;
           default:
             console.log("Erreur inattendue");
         }
       } else {
+        console.log("Modifier un besoin (le supprimer de la BDD");
+        console.log(this.data);
         // Modifier un besoin (le supprimer de la BDD)
         const id_besoin = this.data[index].id_besoin;
 

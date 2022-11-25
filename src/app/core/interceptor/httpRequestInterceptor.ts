@@ -24,7 +24,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     this.ngxLoader.start();
     const access_token = this.oauthService.getAccessToken();
-    console.log(access_token);
 
     if (access_token != null) {
       req = req.clone({
