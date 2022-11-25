@@ -1,14 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  Options,
-  LabelType,
-  ChangeContext,
-  PointerType,
-} from "@angular-slider/ngx-slider";
+import { Options, LabelType, ChangeContext } from "@angular-slider/ngx-slider";
 
 import { ToastrService } from "ngx-toastr";
 import { BesoinsService } from "../../core/service/besoins.service";
-import { BesoinsDay } from "app/core/model/besoins";
+import { OptionsService } from "app/core/service/options.service";
 
 export interface Header {
   color: string;
@@ -48,15 +43,20 @@ export interface Data {
 })
 export class BesoinComponent implements OnInit {
   result: boolean;
+  autosave: boolean = true;
   resultVal: number;
   data: Data[] = [];
 
   constructor(
     private toastr: ToastrService,
-    private besoinService: BesoinsService
+    private besoinService: BesoinsService,
+    private optionsService: OptionsService
   ) {}
 
   ngOnInit(): void {
+    this.autosave =
+      localStorage.getItem("options-autosave") == "true" ? true : false;
+
     this.besoinService.getBesoins().subscribe((resp: any) => {
       this.data = this.data.filter((e) => !e.value); // Supprimer toutes les données validées
       resp.map((v) => {
@@ -115,6 +115,18 @@ export class BesoinComponent implements OnInit {
     true: "btn btn-success active",
     false: "btn btn-default",
   };
+
+  handleAutoSave(): void {
+    this.optionsService
+      .updateOptionsFamille({ autosave: !this.autosave })
+      .subscribe(() => {
+        this.autosave = !this.autosave;
+      });
+  }
+
+  saveAll(): void {
+    alert("A implémenter");
+  }
 
   getValue(id: string): boolean {
     this.result = false;
@@ -191,16 +203,25 @@ export class BesoinComponent implements OnInit {
         besoin_soir_debut: per == "soi" ? lowValue : null,
         besoin_soir_fin: per == "soi" ? highValue : null,
       };
-      this.besoinService.createBesoinDay(besoin).subscribe(() =>
-        this.data.push({
-          id_besoin: besoin.id_besoin,
-          id,
-          jour,
-          value: true,
-          lowValue,
-          highValue,
-        })
-      );
+      this.autosave
+        ? this.besoinService.createBesoinDay(besoin).subscribe(() =>
+            this.data.push({
+              id_besoin: besoin.id_besoin,
+              id,
+              jour,
+              value: true,
+              lowValue,
+              highValue,
+            })
+          )
+        : this.data.push({
+            id_besoin: besoin.id_besoin,
+            id,
+            jour,
+            value: true,
+            lowValue,
+            highValue,
+          });
     } else {
       // Il existe au moins un besoin exprimé pour la journée
       const id_besoin = this.data[index].id_besoin;
@@ -225,11 +246,13 @@ export class BesoinComponent implements OnInit {
               besoin_matin_fin: highValue,
               type: "matin",
             };
-            this.besoinService
-              .createBesoinMatin(besoinMat)
-              .subscribe(() =>
-                this.updateData(index2, lowValue, highValue, localData)
-              );
+            this.autosave
+              ? this.besoinService
+                  .createBesoinMatin(besoinMat)
+                  .subscribe(() =>
+                    this.updateData(index2, lowValue, highValue, localData)
+                  )
+              : this.updateData(index2, lowValue, highValue, localData);
             break;
           case "mid":
             const besoinMidi = {
@@ -239,11 +262,13 @@ export class BesoinComponent implements OnInit {
               besoin_midi_fin: highValue,
               type: "midi",
             };
-            this.besoinService
-              .createBesoinMidi(besoinMidi)
-              .subscribe(() =>
-                this.updateData(index2, lowValue, highValue, localData)
-              );
+            this.autosave
+              ? this.besoinService
+                  .createBesoinMidi(besoinMidi)
+                  .subscribe(() =>
+                    this.updateData(index2, lowValue, highValue, localData)
+                  )
+              : this.updateData(index2, lowValue, highValue, localData);
             break;
           case "soi":
             const besoinSoir = {
@@ -253,18 +278,18 @@ export class BesoinComponent implements OnInit {
               besoin_soir_fin: highValue,
               type: "soir",
             };
-            this.besoinService
-              .createBesoinSoir(besoinSoir)
-              .subscribe(() =>
-                this.updateData(index2, lowValue, highValue, localData)
-              );
+            this.autosave
+              ? this.besoinService
+                  .createBesoinSoir(besoinSoir)
+                  .subscribe(() =>
+                    this.updateData(index2, lowValue, highValue, localData)
+                  )
+              : this.updateData(index2, lowValue, highValue, localData);
             break;
           default:
             console.log("Erreur inattendue");
         }
       } else {
-        console.log("Modifier un besoin (le supprimer de la BDD");
-        console.log(this.data);
         // Modifier un besoin (le supprimer de la BDD)
         const id_besoin = this.data[index].id_besoin;
 
@@ -277,11 +302,13 @@ export class BesoinComponent implements OnInit {
               besoin_matin_fin: null,
               type: "matin",
             };
-            this.besoinService
-              .createBesoinMatin(besoinMat)
-              .subscribe(
-                () => (this.data[index2].value = !this.data[index2].value)
-              );
+            this.autosave
+              ? this.besoinService
+                  .createBesoinMatin(besoinMat)
+                  .subscribe(
+                    () => (this.data[index2].value = !this.data[index2].value)
+                  )
+              : (this.data[index2].value = !this.data[index2].value);
             break;
           case "mid":
             const besoinMidi = {
@@ -291,11 +318,13 @@ export class BesoinComponent implements OnInit {
               besoin_midi_fin: null,
               type: "midi",
             };
-            this.besoinService
-              .createBesoinMidi(besoinMidi)
-              .subscribe(
-                () => (this.data[index2].value = !this.data[index2].value)
-              );
+            this.autosave
+              ? this.besoinService
+                  .createBesoinMidi(besoinMidi)
+                  .subscribe(
+                    () => (this.data[index2].value = !this.data[index2].value)
+                  )
+              : (this.data[index2].value = !this.data[index2].value);
             break;
           case "soi":
             const besoinSoir = {
@@ -305,11 +334,13 @@ export class BesoinComponent implements OnInit {
               besoin_soir_fin: null,
               type: "soir",
             };
-            this.besoinService
-              .createBesoinSoir(besoinSoir)
-              .subscribe(
-                () => (this.data[index2].value = !this.data[index2].value)
-              );
+            this.autosave
+              ? this.besoinService
+                  .createBesoinSoir(besoinSoir)
+                  .subscribe(
+                    () => (this.data[index2].value = !this.data[index2].value)
+                  )
+              : (this.data[index2].value = !this.data[index2].value);
             break;
           default:
             console.log("Erreur inattendue");

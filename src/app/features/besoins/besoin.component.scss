@@ -1,8 +1,17 @@
-h1{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+.title-besoins{
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  text-align: left;
+}
+
+.options-besoins{
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  text-align: left;
+  align-self: center;
+  align-items: flex-end;
 }
 
 .btn span.glyphicon {    			

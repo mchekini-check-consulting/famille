@@ -1,7 +1,29 @@
-<h4 style="text-align: center">Je déclare mes besoins</h4>
+<div style="display: flex; flex-direction: row; height: 80px; margin: 0 20px">
+  <div class="title-besoins">
+    <h4 style="margin-top: 25px">Je déclare mes besoins</h4>
+  </div>
+  <div class="options-besoins">
+    <mat-checkbox
+      class="example-margin"
+      [checked]="autosave"
+      (change)="handleAutoSave()"
+      >Enregistrer à chaque modification</mat-checkbox
+    >
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      style="width: 200px"
+      [disabled]="autosave"
+      (click)="saveAll()"
+    >
+      Enregistrer Tout
+    </button>
+  </div>
+</div>
 
 <mat-card class="card-demo">
-  <mat-card-content class="containerX">
+  <mat-card-content>
     <div style="height: 100%">
       <div
         style="

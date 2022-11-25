@@ -24,6 +24,14 @@ export class InfosComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  ngOnInit(): void {
+    this.submitIsDisabled = true;
+    this.userService.getInfosFamille().subscribe((data: Famille) => {
+      this.user = data;
+      this.initialUser = { ...data };
+    });
+  }
+
   isValid(p: string) {
     var phoneRe = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/;
     var digits = p.replace(/\D/g, "");
@@ -95,14 +103,6 @@ export class InfosComponent implements OnInit {
         this.submitIsDisabled = false;
         console.error("There was an error!", error);
       },
-    });
-  }
-
-  ngOnInit(): void {
-    this.submitIsDisabled = true;
-    this.userService.getInfosFamille().subscribe((data: Famille) => {
-      this.user = data;
-      this.initialUser = { ...data };
     });
   }
 }

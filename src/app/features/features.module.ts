@@ -8,6 +8,8 @@ import { HistoriqueComponent } from "./historique/historique.component";
 import { InfosComponent } from "./infos/infos.component";
 import { MatCardModule } from "@angular/material/card";
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -18,6 +20,13 @@ import { NgxSliderModule } from "@angular-slider/ngx-slider";
     InfosComponent,
   ],
 
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, NgxSliderModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    NgxSliderModule,
+    MatCheckboxModule,
+    MatButtonModule,
+  ],
 })
 export class FeaturesModule {}
