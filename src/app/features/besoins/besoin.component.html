@@ -1,11 +1,163 @@
-<h4>Je déclare mes besoins</h4>
+<div style="display: flex; flex-direction: row; height: 80px; margin: 0 20px">
+  <div class="title-besoins">
+    <h4 style="margin-top: 25px">Je déclare mes besoins</h4>
+  </div>
+  <div class="options-besoins">
+    <mat-checkbox
+      class="example-margin"
+      [checked]="autosave"
+      (change)="handleAutoSave()"
+      >Enregistrer à chaque modification</mat-checkbox
+    >
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      style="width: 200px"
+      [disabled]="autosave"
+      (click)="saveAll()"
+    >
+      Enregistrer Tout
+    </button>
+  </div>
+</div>
 
-<!--mat-card>
-  <mat-card-title>Actions Buttons</mat-card-title>
-  <mat-card-subtitle>Start</mat-card-subtitle>
-  <mat-card-actions>
-    <button mat-button>7h</button>
-    <button mat-button>8h</button>
-  </mat-card-actions>
-</mat-card-->
-
+<mat-card class="card-demo">
+  <mat-card-content>
+    <div style="height: 100%">
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr repeat(3, 2fr);
+          grid-column-gap: 10px;
+          grid-row-gap: 10px;
+          text-align: center;
+        "
+      >
+        <div></div>
+        <div
+          class="card"
+          *ngFor="let tile of headers"
+          [style.background]="tile.color"
+          style="
+            margin-bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          <div class="content">{{ tile.text }}</div>
+        </div>
+        <ng-container *ngFor="let jour of jours">
+          <div
+            class="card"
+            [style.background]="jour.color"
+            style="
+              margin-bottom: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <div class="content">{{ jour.text }}</div>
+          </div>
+          <div
+            class="card"
+            id="{{ jour.id }}mat"
+            style="margin-bottom: 0"
+            [style.background]="jour.bgData"
+          >
+            <div class="content">
+              <label
+                class="{{ mapClass[getValue(jour.id.toString() + 'mat')] }}"
+                ><input
+                  type="checkbox"
+                  [checked]="getValue(jour.id.toString() + 'mat')"
+                  (click)="handleBesoin(jour.id.toString() + 'mat', 7, 12)"
+              /></label>
+            </div>
+            <hr style="margin: 0" />
+            <div
+              *ngIf="getValue(jour.id.toString() + 'mat')"
+              class="custom-slider"
+              style="width: 80%; margin-left: 10%; margin: 15px"
+            >
+              <ngx-slider
+                [value]="getLowValue(jour.id.toString() + 'mat')"
+                [highValue]="getHighValue(jour.id.toString() + 'mat')"
+                [options]="optionsMat"
+                (userChange)="
+                  getChangeContextString($event, jour.id.toString() + 'mat')
+                "
+              ></ngx-slider>
+            </div>
+          </div>
+          <!---------------------------->
+          <div
+            class="card"
+            id="{{ jour.id }}mid"
+            style="margin-bottom: 0"
+            [style.background]="jour.bgData"
+          >
+            <div class="content">
+              <label
+                class="{{ mapClass[getValue(jour.id.toString() + 'mid')] }}"
+                ><input
+                  type="checkbox"
+                  [checked]="getValue(jour.id.toString() + 'mid')"
+                  (click)="handleBesoin(jour.id.toString() + 'mid', 12, 18)"
+              /></label>
+            </div>
+            <hr style="margin: 0" />
+            <div
+              *ngIf="getValue(jour.id.toString() + 'mid')"
+              class="custom-slider"
+              style="width: 80%; margin-left: 10%; margin: 15px"
+            >
+              <ngx-slider
+                [value]="getLowValue(jour.id.toString() + 'mid')"
+                [highValue]="getHighValue(jour.id.toString() + 'mid')"
+                [options]="optionsMid"
+                (userChange)="
+                  getChangeContextString($event, jour.id.toString() + 'mid')
+                "
+              ></ngx-slider>
+            </div>
+          </div>
+          <!----------------------------------->
+          <div
+            class="card"
+            id="{{ jour.id }}soi"
+            style="margin-bottom: 0"
+            [style.background]="jour.bgData"
+          >
+            <div class="content">
+              <label
+                class="{{ mapClass[getValue(jour.id.toString() + 'soi')] }}"
+                ><input
+                  type="checkbox"
+                  [checked]="getValue(jour.id.toString() + 'soi')"
+                  (click)="handleBesoin(jour.id.toString() + 'soi', 18, 22)"
+              /></label>
+            </div>
+            <hr style="margin: 0" />
+            <div
+              *ngIf="getValue(jour.id.toString() + 'soi')"
+              class="custom-slider"
+              style="width: 80%; margin-left: 10%; margin: 15px"
+            >
+              <ngx-slider
+                [value]="getLowValue(jour.id.toString() + 'soi')"
+                [highValue]="getHighValue(jour.id.toString() + 'soi')"
+                [options]="optionsSoi"
+                (userChange)="
+                  getChangeContextString($event, jour.id.toString() + 'soi')
+                "
+              ></ngx-slider>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

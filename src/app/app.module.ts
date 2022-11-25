@@ -12,8 +12,6 @@ import { HttpRequestInterceptor } from "./core/interceptor/httpRequestIntercepto
 import { ToastrModule } from "ngx-toastr";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
 
-import { MatCardModule } from "@angular/material/card";
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -22,7 +20,6 @@ import { MatCardModule } from "@angular/material/card";
     HttpClientModule,
     CoreModule,
     AppRoutingModule,
-    MatCardModule,
     OAuthModule.forRoot(),
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
