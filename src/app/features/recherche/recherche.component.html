@@ -1,1 +1,104 @@
-<h1>Fonctionnalité à développer</h1>
+<div>
+
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title" style="text-align: center; font-weight: bold; position: relative; left: -8%;">Recherche multi-critères</h4>
+                        </div>
+                        <div class="content">
+                            <form [formGroup]="myForm">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nom</label>
+                                            <input formControlName="nom" type="text" class="form-control" placeholder="Nom">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Prénom</label>
+                                            <input formControlName="prenom"type="text" class="form-control" placeholder="Prénom">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Ville</label>
+                                            <input formControlName="ville" type="text" class="form-control" placeholder="Ville">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    </div>
+                                </div>
+                                <button (click)="searchNounouByCriteria()" type="submit" class="btn btn-info btn-fill col-lg-2 col-lg-offset-4">Rechercher</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<br>
+<br>
+
+
+<div class="mat-elevation-z8">
+    <table style="margin-left: 2%; width: 96%;" mat-table [dataSource]="dataSource">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef> Nom</th>
+            <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="prenom">
+            <th mat-header-cell *matHeaderCellDef> Prénom</th>
+            <td mat-cell *matCellDef="let element"> {{element.prenom}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="adresse">
+            <th mat-header-cell *matHeaderCellDef> Adresse</th>
+            <td mat-cell *matCellDef="let element"> {{element.adresse}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="telephone">
+            <th mat-header-cell *matHeaderCellDef> Télephone</th>
+            <td mat-cell *matCellDef="let element"> {{element.telephone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="mail">
+            <th mat-header-cell *matHeaderCellDef> Adresse mail</th>
+            <td mat-cell *matCellDef="let element"> {{element.mail}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="contact">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="warn">Contacter</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!--    <mat-paginator [pageSizeOptions]="[5, 10, 20]"-->
+    <!--                   showFirstLastButtons-->
+    <!--                   aria-label="Select page of periodic elements">-->
+    <!--    </mat-paginator>-->
+</div>

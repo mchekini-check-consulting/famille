@@ -31,7 +31,7 @@
                       type="email"
                       class="form-control"
                       placeholder="Votre adresse Email"
-                      [value]="user.email"
+                      [value]="user.mail"
                     />
                   </div>
                 </div>
@@ -59,7 +59,7 @@
                       type="text"
                       class="form-control"
                       placeholder="Votre prénom"
-                      [value]="user.prenomRepresentant"
+                      [value]="user.prenom"
                       (change)="handleForm($event)"
                     />
                   </div>
@@ -72,7 +72,7 @@
                       type="text"
                       class="form-control"
                       placeholder="Votre n° de téléphone"
-                      [value]="user.numeroTelephone"
+                      [value]="user.telephone"
                       (change)="handleForm($event)"
                     />
                   </div>

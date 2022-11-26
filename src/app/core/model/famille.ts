@@ -1,8 +1,8 @@
 export class Famille {
-    email: string;
+    mail: string;
     nom: string;
-    prenomRepresentant: string;
+    prenom: string;
     adresse: string;
-    numeroTelephone: string;
+    telephone: string;
     pseudo: string;
 }

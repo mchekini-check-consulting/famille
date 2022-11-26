@@ -147,11 +147,6 @@ div.colored > div:nth-child(10n+7), .seven {
   color: #a3a3a3;
 }
 
-.title {
-  margin: 5px;
-  font-size: 0.9em;
-  color: #5c5c5c;
-}
 
 .box {
   border: solid 1px gray;

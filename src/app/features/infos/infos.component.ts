@@ -42,7 +42,7 @@ export class InfosComponent implements OnInit {
     this.errMessageForm = "";
     if (
       user.nom == "" ||
-      user.prenomRepresentant.length == 0 ||
+      user.prenom.length == 0 ||
       user.adresse.length == 0
     ) {
       this.toastr.warning(
@@ -74,7 +74,7 @@ export class InfosComponent implements OnInit {
   }
 
   submitInfos() {
-    if (!this.isValid(this.user.numeroTelephone)) {
+    if (!this.isValid(this.user.telephone)) {
       this.toastr.error(
         "Veuillez vérifier le format du n° de téléphone",
         "Modification"
