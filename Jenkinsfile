@@ -35,5 +35,4 @@ node("ci-node") {
           sh "sudo docker run -p 81:80 --name famille -d mchekini/famille:1.0"
         }
     }
-
 }
