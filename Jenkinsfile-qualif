@@ -9,7 +9,7 @@ node("ci-node") {
     }
 
     stage("build docker image"){
-           sh "sudo docker build -t famille ."
+           sh "sudo docker build -t famille-ui-qua ."
     }
 
     stage("push image to docker hub"){
@@ -20,6 +20,13 @@ node("ci-node") {
 
     node("qualif-node"){
         stage("deploy"){
+            try{
+                sh "sudo docker stop famille-ui"
+                sh "sudo docker rm famille-ui"
+                sh "sudo docker rmi mchekini/famille-ui-qua:1.0"
+            }catch(Exception e){
+                println "Aucun conteneur avec le nom famille-ui n'est présent"
+            }
             sh "sudo docker run --name famille-ui -p 81:80 mchekini/famille-ui-qua:1.0"
         }
     }

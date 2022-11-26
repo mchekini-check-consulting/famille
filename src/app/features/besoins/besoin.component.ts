@@ -153,7 +153,9 @@ export class BesoinComponent implements OnInit {
 
   saveAll(): void {
     if (this.changes.length == 0) {
-      this.toastr.error("Aucune modification n'est effectuée !");
+      this.toastr.error(
+        "Oups ! Il faut déclarer au minimum un besoin avant d’enregistrer"
+      );
       return null;
     }
     this.changes = this.changes.filter((e) => {
