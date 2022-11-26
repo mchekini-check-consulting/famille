@@ -15,6 +15,12 @@ import { besoinsApiUrl } from "../common";
 export class BesoinsService {
   constructor(private http: HttpClient) {}
 
+  createBesoinAll(data: BesoinsDay[]): Observable<BesoinsDay[]> {
+    return this.http
+      .put<BesoinsDay[]>(besoinsApiUrl + "/update-all", data)
+      .pipe();
+  }
+
   createBesoinDay(data: BesoinsDay): Observable<BesoinsDay> {
     return this.http.post<BesoinsDay>(besoinsApiUrl + "/create", data).pipe();
   }

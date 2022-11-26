@@ -7,6 +7,7 @@ export class BesoinsDay {
   besoin_midi_fin: number;
   besoin_soir_debut: number;
   besoin_soir_fin: number;
+  type: string;
 }
 
 export class BesoinsMatin {

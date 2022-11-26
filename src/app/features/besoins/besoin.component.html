@@ -1,23 +1,23 @@
-<div style="display: flex; flex-direction: row; height: 80px; margin: 0 20px">
+<div style="display: flex; flex-direction: row; height: 60px; margin: 0 20px">
   <div class="title-besoins">
-    <h4 style="margin-top: 25px">Je déclare mes besoins</h4>
+    <h4 style="margin-top: 15px">Je déclare mes besoins</h4>
   </div>
   <div class="options-besoins">
-    <mat-checkbox
+    <!--mat-checkbox
       class="example-margin"
       [checked]="autosave"
       (change)="handleAutoSave()"
       >Enregistrer à chaque modification</mat-checkbox
-    >
+    -->
     <button
       type="button"
       mat-raised-button
       color="primary"
       style="width: 200px"
-      [disabled]="autosave"
+      [disabled]="stateSaveAll()"
       (click)="saveAll()"
     >
-      Enregistrer Tout
+      <span>Enregistrer <span *ngIf="changesLength()">Tout</span></span>
     </button>
   </div>
 </div>
@@ -66,6 +66,7 @@
             id="{{ jour.id }}mat"
             style="margin-bottom: 0"
             [style.background]="jour.bgData"
+            [style.border]="getBorderColor(jour.id.toString() + 'mat')"
           >
             <div class="content">
               <label
@@ -98,6 +99,7 @@
             id="{{ jour.id }}mid"
             style="margin-bottom: 0"
             [style.background]="jour.bgData"
+            [style.border]="getBorderColor(jour.id.toString() + 'mid')"
           >
             <div class="content">
               <label
@@ -130,6 +132,7 @@
             id="{{ jour.id }}soi"
             style="margin-bottom: 0"
             [style.background]="jour.bgData"
+            [style.border]="getBorderColor(jour.id.toString() + 'soi')"
           >
             <div class="content">
               <label
