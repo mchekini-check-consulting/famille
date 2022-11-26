@@ -310,7 +310,6 @@ export class BesoinComponent implements OnInit {
     const jour = +id[0];
     const index = this.data.findIndex((e) => e.jour == jour);
     const per = id.slice(1);
-
     if (index == -1) {
       // Insérer un nouveau besoin pour une journée qui n'a aucun besoin exprimé
       const besoin = {
