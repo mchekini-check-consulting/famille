@@ -2,23 +2,25 @@ node("ci-node") {
     stage("checkout") {
         checkout([$class: 'GitSCM', branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mchekini-check-consulting/famille-ui.git']]])
     }
+    
     stage("build"){
         sh "npm install"
         sh "ng build --configuration production"
     }
+
     stage("build docker image"){
-           sh "sudo docker login -u mchekini -p jskabyliE."
+           sh "sudo docker build -t famille ."
     }
 
     stage("push image to docker hub"){
-        sh "sudo docker login -u  -p "
+        sh "sudo docker login -u mchekini -p jskabyliE"
         sh "sudo docker tag famille-ui-qua mchekini/famille-ui-qua:1.0"
         sh "sudo docker push mchekini/famille-ui-qua:1.0 "
     }
 
- node("qualif-node"){
-    stage("deploy"){
-        sh "sudo docker run --name famille-ui -p 80:80 mchekini/famille-ui-qua:1.0"
+    node("qualif-node"){
+        stage("deploy"){
+            sh "sudo docker run --name famille-ui -p 81:80 mchekini/famille-ui-qua:1.0"
+        }
     }
- }
 }
