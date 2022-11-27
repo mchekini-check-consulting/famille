@@ -1,6 +1,6 @@
 <div style="display: flex; flex-direction: row; height: 60px; margin: 0 20px">
   <div class="title-besoins">
-    <h4 style="margin-top: 15px">Je déclare mes besoins</h4>
+    <h2 style="margin-top: 15px; text-align: center; font-weight: bold; position: relative; left: 20%;">Je déclare mes besoins</h2>
   </div>
   <div class="options-besoins">
     <!--mat-checkbox
@@ -9,16 +9,7 @@
       (change)="handleAutoSave()"
       >Enregistrer à chaque modification</mat-checkbox
     -->
-    <button
-      type="button"
-      mat-raised-button
-      color="primary"
-      style="width: 200px"
-      [disabled]="stateSaveAll()"
-      (click)="saveAll()"
-    >
-      <span>Enregistrer <span *ngIf="changesLength()">Tout</span></span>
-    </button>
+
   </div>
 </div>
 
@@ -164,3 +155,15 @@
     </div>
   </mat-card-content>
 </mat-card>
+
+
+<button
+        type="button"
+        mat-raised-button
+        color="primary"
+        style="width: 200px; height: 50px; position: relative; left: 40%; top: 50px;"
+        [disabled]="stateSaveAll()"
+        (click)="saveAll()"
+>
+  <span>Enregistrer <span *ngIf="changesLength()">Tout</span></span>
+</button>
