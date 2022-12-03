@@ -11,6 +11,8 @@ import { DatePipe } from "@angular/common";
 
 import { ToastrService } from "ngx-toastr";
 
+import { ActivatedRoute } from "@angular/router";
+
 export interface Item {
   nom: string;
   prenom: string;
@@ -44,7 +46,8 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
   constructor(
     private chatService: ChatService,
     private datePipe: DatePipe,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private _Activatedroute: ActivatedRoute
   ) {
     this.screenHeight = window.innerHeight;
   }
@@ -54,13 +57,14 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
   public items: Item[] = [];
   private selectedItem: string = "";
   private dataToSend: DataToSend[] = [];
+  private id: string = "";
 
   // Insérer des données temporaires
   private nounous: Item[] = [
     {
       prenom: "Mahdi",
       nom: "Chekini",
-      email: "mchekini@gmail.com",
+      email: "me.chekini@gmail.com",
       adresse: "16 rue de la voute 75012 paris",
       selected: false,
     },
@@ -89,30 +93,30 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
   public conversations: Messages[] = [
     {
       emailSource: "m82.ramdani@gmail.com",
-      emailDest: "mchekini@gmail.com",
+      emailDest: "me.chekini@gmail.com",
       content: "Bonjour, comment allez vous ?",
       time: new Date("December 1, 2022, 12:01:35"),
     },
     {
       emailSource: "m82.ramdani@gmail.com",
-      emailDest: "mchekini@gmail.com",
+      emailDest: "me.chekini@gmail.com",
       content: "Ca va merci",
       time: new Date("December 1, 2022, 12:04:09"),
     },
     {
       emailSource: "m82.ramdani@gmail.com",
-      emailDest: "mchekini@gmail.com",
+      emailDest: "me.chekini@gmail.com",
       content: "J'aimerais savoir si vous seriez libre pour discuter",
       time: new Date("December 1, 2022, 12:04:23"),
     },
     {
-      emailSource: "mchekini@gmail.com",
+      emailSource: "me.chekini@gmail.com",
       emailDest: "m82.ramdani@gmail.com",
       content: "Bonjour, ça va merci et vous ?",
       time: new Date("December 1, 2022, 12:01:55"),
     },
     {
-      emailSource: "mchekini@gmail.com",
+      emailSource: "me.chekini@gmail.com",
       emailDest: "m82.ramdani@gmail.com",
       content:
         "Oui y a pas de soucis. Vous pouvez me contacter sur mon téléphone.",
@@ -203,6 +207,12 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
     /*this.chatService.getChatFamille().subscribe((resp) => {
       this.items = [...resp];
     });*/
+
+    // récupèrer la valeur de l'id envoyé par une recherche
+    this._Activatedroute.paramMap.subscribe((paramMap) => {
+      this.id = paramMap.get("id");
+    });
+
     // Trier les conversations
     this.conversations.sort((a, b) => {
       return Number(a.time) - Number(b.time);
@@ -233,7 +243,9 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
       });
     });
 
-    if (this.items.length > 0) {
+    if (this.id != null) {
+      this.getListConversation(this.id);
+    } else if (this.items.length > 0) {
       this.getListConversation(this.items[0].email);
     }
   }
