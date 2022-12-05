@@ -1,1 +1,124 @@
-<h1>Fonctionnalité à développer</h1>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="content">
+            <form style="height: 730px">
+              <div
+                #chat
+                id="chat"
+                class="row"
+                style="height: 600px; overflow-y: auto; overflow-x: hidden"
+              >
+                <div class="row" *ngIf="listConversations.length == 0">
+                  <p style="text-align: center">Aucune conversation</p>
+                </div>
+                <div *ngFor="let chat of listConversations">
+                  <div class="row" *ngIf="chat.type == 'output' ? true : false">
+                    <div class="col-md-1"></div>
+                    <div
+                      class="col-md-8"
+                      align="left"
+                      style="margin-left: -25px"
+                    >
+                      <p
+                        style="
+                          background: aliceblue;
+                          padding: 10px;
+                          max-width: fit-content;
+                        "
+                      >
+                        {{ chat.content }}
+                        <br />
+                        <span style="font-size: 12px">
+                          {{ chat.timeMessage }}
+                        </span>
+                      </p>
+                    </div>
+                    <div class="col-md-3"></div>
+                  </div>
+                  <div class="row" *ngIf="chat.type == 'input' ? true : false">
+                    <div class="col-md-3"></div>
+                    <div
+                      class="col-md-8"
+                      align="right"
+                      style="margin-left: 25px"
+                    >
+                      <p
+                        style="
+                          background: honeydew;
+                          padding: 10px;
+                          max-width: fit-content;
+                        "
+                      >
+                        {{ chat.content }}
+                        <br />
+                        <span style="font-size: 12px">
+                          {{ chat.timeMessage }}
+                        </span>
+                      </p>
+                    </div>
+                    <div class="col-md-1"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <textarea
+                      rows="2"
+                      class="form-control"
+                      placeholder="Veuillez saisir votre message"
+                      [value]="getContent()"
+                      (change)="handleContent($event)"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-info btn-fill pull-right"
+                (click)="sendMessage($event)"
+              >
+                Envoyer
+              </button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div
+          class="card"
+          style="
+            height: 755px;
+            overflow-y: auto;
+            margin-bottom: 0px;
+            padding-top: 10px;
+          "
+        >
+          <div
+            class="content"
+            style="padding: 20px 15px 10px"
+            *ngFor="let item of items"
+            [style.background]="getBgSelected(item)"
+          >
+            <div>
+              <a
+                (click)="getListConversation(item.mail, '')"
+                style="cursor: pointer"
+              >
+                <h5 class="title" style="margin: -10px 0 10px">
+                  {{ item.prenom }} {{ item.nom }}<br />
+                  <small>{{ item.adresse }}</small>
+                </h5>
+              </a>
+            </div>
+            <hr style="margin: 0" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
