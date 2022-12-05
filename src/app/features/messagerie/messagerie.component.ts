@@ -14,7 +14,9 @@ import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute } from "@angular/router";
 import { OAuthService } from "angular-oauth2-oidc";
 
-import { filter } from "rxjs/operators";
+import { interval } from "rxjs/internal/observable/interval";
+import { Subscription } from "rxjs";
+import { startWith, switchMap } from "rxjs/operators";
 
 export interface Item {
   nom: string;
@@ -69,11 +71,24 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
   private nounous: Item[] = [];
   public conversations: Messages[] = [];
 
+  timeInterval: Subscription;
+  status: any;
+
   getCurrentUser(): void {
     this.currentEmail = this.oauthService.getIdentityClaims()["email"];
   }
 
   ngOnInit() {
+    this.timeInterval = interval(5000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.chatService.getChatFamille())
+      )
+      .subscribe(
+        (resp) => ((this.conversations = [...resp]), this.poolService()),
+        (err) => console.log("HTTP Error", err)
+      );
+
     this.getCurrentUser();
     this.chatService.getListNounous().subscribe((resp) => {
       resp.map((r) => {
@@ -85,6 +100,16 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
       });
     });
   }
+
+  poolService(): void {
+    // Trier les conversations
+    this.conversations.sort((a, b) => {
+      return Number(a.timeMessage) - Number(b.timeMessage);
+    });
+
+    this.getListConversation(this.selectedItem, "");
+  }
+
   initService(): void {
     // récupèrer la valeur de l'id envoyé par une recherche
     this._Activatedroute.paramMap.subscribe((paramMap) => {

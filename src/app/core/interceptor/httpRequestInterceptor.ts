@@ -22,7 +22,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.ngxLoader.start();
+    req.url != "/api/v1/famille/chat/get" && this.ngxLoader.start();
     const access_token = this.oauthService.getAccessToken();
 
     if (access_token != null) {
