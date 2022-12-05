@@ -12,18 +12,22 @@ import { DatePipe } from "@angular/common";
 import { ToastrService } from "ngx-toastr";
 
 import { ActivatedRoute } from "@angular/router";
+import { OAuthService } from "angular-oauth2-oidc";
+
+import { filter } from "rxjs/operators";
 
 export interface Item {
   nom: string;
   prenom: string;
   adresse: string;
-  email: string;
+  mail: string;
+  telephone: string;
   selected: boolean;
 }
 
 export interface Conversation {
   content: string;
-  time: string;
+  timeMessage: string;
   type: string;
   email: string;
 }
@@ -32,7 +36,7 @@ export interface DataToSend {
   content: string;
   emailSource: string;
   emailDest: string;
-  time: null;
+  timeMessage: null;
 }
 
 @Component({
@@ -47,7 +51,8 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
     private chatService: ChatService,
     private datePipe: DatePipe,
     private toastr: ToastrService,
-    private _Activatedroute: ActivatedRoute
+    private _Activatedroute: ActivatedRoute,
+    private oauthService: OAuthService
   ) {
     this.screenHeight = window.innerHeight;
   }
@@ -58,156 +63,29 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
   private selectedItem: string = "";
   private dataToSend: DataToSend[] = [];
   private id: string = "";
+  private currentEmail: string = "";
 
   // Insérer des données temporaires
-  private nounous: Item[] = [
-    {
-      prenom: "Mahdi",
-      nom: "Chekini",
-      email: "me.chekini@gmail.com",
-      adresse: "16 rue de la voute 75012 paris",
-      selected: false,
-    },
-    {
-      prenom: "Essaid",
-      nom: "Brahiti",
-      email: "essaid.brahiti@gmail.com",
-      adresse: "10 rue médéric 94120 fontenay",
-      selected: false,
-    },
-    {
-      prenom: "Djedjiga",
-      nom: "Kesri",
-      email: "djedjiga.kesri@gmail.com",
-      adresse: "5 rue saint gobain 93300 Aubervilliers",
-      selected: false,
-    },
-    {
-      prenom: "Tahar",
-      nom: "Makour",
-      email: "tahar2968@gmail.com",
-      adresse: "24 rue maréchal leclerc 69800 lyon",
-      selected: false,
-    },
-  ];
-  public conversations: Messages[] = [
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "me.chekini@gmail.com",
-      content: "Bonjour, comment allez vous ?",
-      time: new Date("December 1, 2022, 12:01:35"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "me.chekini@gmail.com",
-      content: "Ca va merci",
-      time: new Date("December 1, 2022, 12:04:09"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "me.chekini@gmail.com",
-      content: "J'aimerais savoir si vous seriez libre pour discuter",
-      time: new Date("December 1, 2022, 12:04:23"),
-    },
-    {
-      emailSource: "me.chekini@gmail.com",
-      emailDest: "m82.ramdani@gmail.com",
-      content: "Bonjour, ça va merci et vous ?",
-      time: new Date("December 1, 2022, 12:01:55"),
-    },
-    {
-      emailSource: "me.chekini@gmail.com",
-      emailDest: "m82.ramdani@gmail.com",
-      content:
-        "Oui y a pas de soucis. Vous pouvez me contacter sur mon téléphone.",
-      time: new Date("December 1, 2022, 12:04:47"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "essaid.brahiti@gmail.com",
-      content: "Bonjour",
-      time: new Date("December 2, 2022, 15:33:16"),
-    },
-    {
-      emailSource: "essaid.brahiti@gmail.com",
-      emailDest: "m82.ramdani@gmail.com",
-      content: "Bonjour",
-      time: new Date("December 2, 2022, 15:34:09"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "essaid.brahiti@gmail.com",
-      content: "Je vous contacte à propos d'une place pour ma fille",
-      time: new Date("December 2, 2022, 15:34:23"),
-    },
-    {
-      emailSource: "essaid.brahiti@gmail.com",
-      emailDest: "m82.ramdani@gmail.com",
-      content: "D'accord, vous pouvez me contacter sur mon numéro",
-      time: new Date("December 2, 2022, 15:44:09"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "djedjiga.kesri@gmail.com",
-      content: "Bonjour Madame, j'espère que tu vas bien",
-      time: new Date("December 1, 2022, 13:07:35"),
-    },
-    {
-      emailSource: "djedjiga.kesri@gmail.com",
-      emailDest: "m82.ramdani@gmail.com",
-      content: "Bonjour ça va merci et vous",
-      time: new Date("December 2, 2022, 13:09:09"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "djedjiga.kesri@gmail.com",
-      content:
-        "Ca va merci. Je vous contacte à propos d'une place pour ma fille",
-      time: new Date("December 2, 2022, 13:14:23"),
-    },
-    {
-      emailSource: "djedjiga.kesri@gmail.com",
-      emailDest: "m82.ramdani@gmail.com",
-      content: "Désolé, je n'ai plus de disponibilités actuellement",
-      time: new Date("December 2, 2022, 13:21:09"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "djedjiga.kesri@gmail.com",
-      content: "D'accord merci. Je vais rappeler plus tard.",
-      time: new Date("December 2, 2022, 13:26:23"),
-    },
-    {
-      emailSource: "djedjiga.kesri@gmail.com",
-      emailDest: "m82.ramdani@gmail.com",
-      content: "Y a pas de soucis",
-      time: new Date("December 2, 2022, 13:29:09"),
-    },
-    {
-      emailSource: "djedjiga.kesri@gmail.com",
-      emailDest: "m82.ramdani@gmail.com",
-      content: "Veuillez me rappeler la semaine prochaine",
-      time: new Date("December 2, 2022, 13:32:09"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "djedjiga.kesri@gmail.com",
-      content: "Parfait merci",
-      time: new Date("December 2, 2022, 13:34:09"),
-    },
-    {
-      emailSource: "m82.ramdani@gmail.com",
-      emailDest: "tahar2968@gmail.com",
-      content: "Bonjour",
-      time: new Date("December 1, 2022, 10:11:23"),
-    },
-  ];
+  private nounous: Item[] = [];
+  public conversations: Messages[] = [];
+
+  getCurrentUser(): void {
+    this.currentEmail = this.oauthService.getIdentityClaims()["email"];
+  }
 
   ngOnInit() {
-    /*this.chatService.getChatFamille().subscribe((resp) => {
-      this.items = [...resp];
-    });*/
-
+    this.getCurrentUser();
+    this.chatService.getListNounous().subscribe((resp) => {
+      resp.map((r) => {
+        this.nounous.push({ ...r, selected: false });
+      });
+      this.chatService.getChatFamille().subscribe((resp) => {
+        this.conversations = [...resp];
+        this.initService();
+      });
+    });
+  }
+  initService(): void {
     // récupèrer la valeur de l'id envoyé par une recherche
     this._Activatedroute.paramMap.subscribe((paramMap) => {
       this.id = paramMap.get("id");
@@ -215,7 +93,7 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
 
     // Trier les conversations
     this.conversations.sort((a, b) => {
-      return Number(a.time) - Number(b.time);
+      return Number(a.timeMessage) - Number(b.timeMessage);
     });
 
     // Récuperer la liste des nounous
@@ -223,7 +101,7 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
     data.reverse().map((chat) => {
       this.items.push(
         ...this.nounous.filter(
-          (e) => e.email == chat.emailDest || e.email == chat.emailSource
+          (e) => e.mail == chat.emailDest || e.mail == chat.emailSource
         )
       );
     });
@@ -231,22 +109,22 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
     // Obtenir des valeurs uniques des nounous
     this.items = this.items.filter(
       (value, index, self) =>
-        index === self.findIndex((t) => t.email === value.email)
+        index === self.findIndex((t) => t.mail === value.mail)
     );
 
     this.items.map((e) => {
       this.dataToSend.push({
         content: "",
-        emailSource: "m82.ramdani@gmail.com",
-        emailDest: e.email,
-        time: null,
+        emailSource: this.currentEmail,
+        emailDest: e.mail,
+        timeMessage: null,
       });
     });
 
     if (this.id != null) {
-      this.getListConversation(this.id);
+      this.getListConversation(this.id, "search");
     } else if (this.items.length > 0) {
-      this.getListConversation(this.items[0].email);
+      this.getListConversation(this.items[0].mail, "");
     }
   }
 
@@ -257,26 +135,41 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
     } catch (err) {}
   }
 
-  getListConversation(selectedItem: string) {
+  getListConversation(selectedItem: string, origin: string) {
     this.selectedItem = selectedItem;
     this.listConversations = [];
     this.conversations.map((chat) => {
       if (chat.emailSource == selectedItem || chat.emailDest == selectedItem) {
         this.listConversations.push({
           content: chat.content,
-          time: this.datePipe.transform(chat.time, "yyyy-MM-dd HH:mm"),
-          type:
-            chat.emailSource == "m82.ramdani@gmail.com" ? "output" : "input",
+          timeMessage: this.datePipe.transform(
+            chat.timeMessage,
+            "yyyy-MM-dd HH:mm"
+          ),
+          type: chat.emailSource == this.currentEmail ? "output" : "input",
           email:
-            chat.emailSource == "m82.ramdani@gmail.com"
+            chat.emailSource == this.currentEmail
               ? chat.emailDest
               : chat.emailSource,
         });
       }
     });
+
+    // Vérifier si l'item n'a aucune conversation
+    if (origin == "search" && this.listConversations.length === 0) {
+      // Créer une conversation vide et ajouter l'item à la liste
+      this.items.unshift(...this.nounous.filter((e) => e.mail == selectedItem));
+      this.dataToSend.push({
+        content: "",
+        emailSource: this.currentEmail,
+        emailDest: selectedItem,
+        timeMessage: null,
+      });
+    }
+
     // Mettre a jour l'item selectionné
     this.items.map((e, i) =>
-      e.email == selectedItem
+      e.mail == selectedItem
         ? (this.items[i].selected = true)
         : (this.items[i].selected = false)
     );
@@ -323,11 +216,11 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
     this.chatService.sendChatFamille(data).subscribe(() => {
       this.conversations.push({
         content: data.content,
-        time: new Date(),
+        timeMessage: new Date(),
         emailSource: data.emailSource,
         emailDest: data.emailDest,
       });
-      this.getListConversation(data.emailDest);
+      this.getListConversation(data.emailDest, "");
       this.dataToSend.map((d, i) => {
         if (d.emailDest == this.selectedItem)
           return (this.dataToSend[i].content = "");

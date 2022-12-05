@@ -11,6 +11,9 @@
                 class="row"
                 style="height: 600px; overflow-y: auto; overflow-x: hidden"
               >
+                <div class="row" *ngIf="listConversations.length == 0">
+                  <p style="text-align: center">Aucune conversation</p>
+                </div>
                 <div *ngFor="let chat of listConversations">
                   <div class="row" *ngIf="chat.type == 'output' ? true : false">
                     <div class="col-md-1"></div>
@@ -29,7 +32,7 @@
                         {{ chat.content }}
                         <br />
                         <span style="font-size: 12px">
-                          {{ chat.time }}
+                          {{ chat.timeMessage }}
                         </span>
                       </p>
                     </div>
@@ -52,7 +55,7 @@
                         {{ chat.content }}
                         <br />
                         <span style="font-size: 12px">
-                          {{ chat.time }}
+                          {{ chat.timeMessage }}
                         </span>
                       </p>
                     </div>
@@ -103,7 +106,7 @@
           >
             <div>
               <a
-                (click)="getListConversation(item.email)"
+                (click)="getListConversation(item.mail, '')"
                 style="cursor: pointer"
               >
                 <h5 class="title" style="margin: -10px 0 10px">
