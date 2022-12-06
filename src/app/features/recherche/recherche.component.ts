@@ -46,7 +46,7 @@ export class RechercheComponent implements AfterViewInit {
     const ville = this.myForm.get("ville").value;
     this.http
       .get<Nounou[]>(
-        "api/v1/famille/search/nounou?nom=" +
+        "api/v1/search/nounou?nom=" +
           nom +
           "&prenom=" +
           prenom +

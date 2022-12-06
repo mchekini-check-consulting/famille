@@ -18,6 +18,8 @@ import { interval } from "rxjs/internal/observable/interval";
 import { Subscription } from "rxjs";
 import { startWith, switchMap } from "rxjs/operators";
 
+import { Router } from "@angular/router";
+
 export interface Item {
   nom: string;
   prenom: string;
@@ -54,7 +56,8 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
     private datePipe: DatePipe,
     private toastr: ToastrService,
     private _Activatedroute: ActivatedRoute,
-    private oauthService: OAuthService
+    private oauthService: OAuthService,
+    private _router: Router
   ) {
     this.screenHeight = window.innerHeight;
   }
@@ -221,6 +224,10 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
       if (d.emailDest == this.selectedItem)
         return (this.dataToSend[i].content = e.target.value);
     });
+  }
+
+  searchNounou(): void {
+    this._router.navigate(["/recherche"]);
   }
 
   sendMessage(e: any): void {
