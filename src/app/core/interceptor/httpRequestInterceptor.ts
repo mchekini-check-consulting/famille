@@ -18,11 +18,18 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     private ngxLoader: NgxUiLoaderService
   ) {}
 
+  exludedUrls: string[] = [
+    "/api/v1/famille/chat/get",
+    "/api/v1/famille/chat/get-unread-msg",
+    "/api/v1/famille/chat/get-unread-msg-by-nounou",
+    "/api/v1/famille/chat/set-msg-read",
+  ];
+
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    req.url != "/api/v1/famille/chat/get" && this.ngxLoader.start();
+    !this.exludedUrls.includes(req.url) && this.ngxLoader.start();
     const access_token = this.oauthService.getAccessToken();
 
     if (access_token != null) {

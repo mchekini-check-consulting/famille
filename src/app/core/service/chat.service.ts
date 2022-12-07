@@ -22,4 +22,23 @@ export class ChatService {
   getListNounous(): Observable<Nounou[]> {
     return this.http.get<Nounou[]>("api/v1/search/nounou?nom=&prenom=&ville=");
   }
+
+  getUnreadMessages(): Observable<Number> {
+    return this.http.get<Number>(chatApiUrl + "/get-unread-msg");
+  }
+
+  getUnreadMessagesByNounou(): Observable<[string, number]> {
+    return this.http.get<[string, number]>(
+      chatApiUrl + "/get-unread-msg-by-nounou"
+    );
+  }
+
+  setMessageRead(emailSource: string, emailDest: string) {
+    return this.http
+      .put(chatApiUrl + "/set-msg-read", {
+        emailSource,
+        emailDest,
+      })
+      .pipe();
+  }
 }

@@ -111,12 +111,12 @@
           "
         >
           <div
-            class="content"
+            class="content row"
             style="padding: 20px 15px 10px"
             *ngFor="let item of items"
             [style.background]="getBgSelected(item)"
           >
-            <div>
+            <div class="column col-md-10">
               <a
                 (click)="getListConversation(item.mail, '')"
                 style="cursor: pointer"
@@ -126,6 +126,21 @@
                   <small>{{ item.adresse }}</small>
                 </h5>
               </a>
+            </div>
+            <div class="column col-md-2 text-align-end">
+              <span
+                *ngIf="item.nbUnreadMsg !== 0"
+                class="badge"
+                style="
+                  border-radius: 8x;
+                  font-size: 14px;
+                  background: azure;
+                  color: red;
+                  margin: 0 0 4px 5px;
+                  padding: 4px 8px;
+                "
+                >{{ item.nbUnreadMsg }}</span
+              >
             </div>
             <hr style="margin: 0" />
           </div>

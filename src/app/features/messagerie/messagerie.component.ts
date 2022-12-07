@@ -27,6 +27,7 @@ export interface Item {
   mail: string;
   telephone: string;
   selected: boolean;
+  nbUnreadMsg: number;
 }
 
 export interface Conversation {
@@ -77,6 +78,8 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
   timeInterval: Subscription;
   status: any;
 
+  unread_messages: [string, number] = ["", 0];
+
   getCurrentUser(): void {
     this.currentEmail = this.oauthService.getIdentityClaims()["email"];
   }
@@ -92,10 +95,23 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
         (err) => console.log("HTTP Error", err)
       );
 
+    this.timeInterval = interval(5000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.chatService.getUnreadMessagesByNounou())
+      )
+      .subscribe(
+        (resp) => this.setNotifs(resp),
+        (err) => console.log("HTTP Error", err)
+      );
+
     this.getCurrentUser();
+    this.chatService.getUnreadMessagesByNounou().subscribe((resp) => {
+      this.setNotifs(resp);
+    });
     this.chatService.getListNounous().subscribe((resp) => {
       resp.map((r) => {
-        this.nounous.push({ ...r, selected: false });
+        this.nounous.push({ ...r, selected: false, nbUnreadMsg: 0 });
       });
       this.chatService.getChatFamille().subscribe((resp) => {
         this.conversations = [...resp];
@@ -111,6 +127,19 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
     });
 
     this.getListConversation(this.selectedItem, "");
+  }
+
+  setNotifs(data: [string, number]): void {
+    this.unread_messages = data;
+    // Mettre à jour les messages
+    this.items.map((e, i) => {
+      const index = data.findIndex((d) => d[0] == e.mail);
+      if (index != -1) {
+        this.items[i].nbUnreadMsg = data[index][1];
+      } else {
+        this.items[i].nbUnreadMsg = 0;
+      }
+    });
   }
 
   initService(): void {
@@ -195,12 +224,20 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
       });
     }
 
-    // Mettre a jour l'item selectionné
-    this.items.map((e, i) =>
-      e.mail == selectedItem
-        ? (this.items[i].selected = true)
-        : (this.items[i].selected = false)
-    );
+    // Mettre a jour l'item selectionné et le nombre de messages non lus
+    this.items.map((e, i) => {
+      if (e.mail == selectedItem) {
+        e.nbUnreadMsg > 0 &&
+          this.chatService
+            .setMessageRead(selectedItem, this.currentEmail)
+            .subscribe((resp) => {
+              console.log(resp);
+            });
+        this.items[i].selected = true;
+      } else {
+        this.items[i].selected = false;
+      }
+    });
   }
 
   getBgSelected(item: Item): string {
