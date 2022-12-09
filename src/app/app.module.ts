@@ -11,9 +11,11 @@ import { HttpRequestInterceptor } from "./core/interceptor/httpRequestIntercepto
 
 import { ToastrModule } from "ngx-toastr";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
-import { PushNotificationsModule } from "ng-push-ivy";
 
 import { DatePipe } from "@angular/common";
+import {MatSelectModule} from "@angular/material/select";
+import {MatInputModule} from "@angular/material/input";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   imports: [
@@ -26,7 +28,10 @@ import { DatePipe } from "@angular/common";
     OAuthModule.forRoot(),
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
-    PushNotificationsModule,
+    MatSelectModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatSelectModule,
   ],
   declarations: [AppComponent],
   providers: [

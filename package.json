@@ -38,7 +38,6 @@
     "googleapis": "66.0.0",
     "jquery": "3.5.1",
     "net": "^1.0.2",
-    "ng-push-ivy": "^1.0.8",
     "ngx-toastr": "^14.3.0",
     "ngx-ui-loader": "^13.0.0",
     "perfect-scrollbar": "1.5.0",

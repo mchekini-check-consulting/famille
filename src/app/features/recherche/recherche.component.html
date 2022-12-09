@@ -52,6 +52,40 @@
                         placeholder="Ville"
                       />
                     </div>
+
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heure Début</label>
+                      <input
+                              formControlName="debut"
+                              type="time"
+                              class="form-control"
+                              placeholder="Heure de début"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heure Fin</label>
+                      <input
+                              formControlName="fin"
+                              type="time"
+                              class="form-control"
+                              placeholder="Heure de fin"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Journée</label>
+                      <mat-select placeholder="Selectionnez une journée" formControlName = "jour">
+                        <mat-option *ngFor="let jour of jours" [value]="jour.id">
+                          {{jour.text}}
+                        </mat-option>
+                      </mat-select>
+                    </div>
                   </div>
                 </div>
 
