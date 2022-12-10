@@ -2,7 +2,10 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BesoinComponent } from "./besoins/besoin.component";
-import { RechercheComponent } from "./recherche/recherche.component";
+import {
+  RechercheComponent,
+  DialogElements,
+} from "./recherche/recherche.component";
 import { MessagerieComponent } from "./messagerie/messagerie.component";
 import { HistoriqueComponent } from "./historique/historique.component";
 import { InfosComponent } from "./infos/infos.component";
@@ -14,6 +17,11 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatTableModule } from "@angular/material/table";
 import { MatSortModule } from "@angular/material/sort";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -23,6 +31,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     HistoriqueComponent,
     InfosComponent,
     NotificationComponent,
+    DialogElements,
   ],
   imports: [
     CommonModule,
@@ -34,6 +43,11 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatDialogModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
 })
 export class FeaturesModule {}

@@ -18,7 +18,7 @@ export const ROUTES: RouteInfo[] = [
   { path: "/messagerie", title: "Messagerie", icon: "pe-7s-graph", class: "" },
   {
     path: "/historique",
-    title: "Historique",
+    title: "Interventions",
     icon: "pe-7s-map-marker",
     class: "",
   },
@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    this.timeInterval = interval(5000)
+    this.timeInterval = interval(50000)
       .pipe(
         startWith(0),
         switchMap(() => this.chatService.getUnreadMessages())
