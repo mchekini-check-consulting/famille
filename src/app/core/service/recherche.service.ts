@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Nounou } from "../model/nounou";
 import { Intervention } from "../model/intervention";
 import { DisponibiltesNounou } from "../model/disponibilites";
+import { InfosIntervention } from "../model/infosInterventions";
 import { searchApiUrl, interventionApiUrl } from "../common";
 
 @Injectable({
@@ -18,8 +18,8 @@ export class SearchService {
     );
   }
 
-  getAllInterventions(): Observable<Intervention[]> {
-    return this.http.get<Intervention[]>(
+  getAllInterventions(): Observable<InfosIntervention[]> {
+    return this.http.get<InfosIntervention[]>(
       interventionApiUrl + "/get-all-interventions"
     );
   }

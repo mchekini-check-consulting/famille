@@ -20,12 +20,14 @@ import { SearchService } from "app/core/service/recherche.service";
 import { Intervention } from "app/core/model/intervention";
 import { DisponibiltesNounou } from "app/core/model/disponibilites";
 import { Nounou } from "app/core/model/nounou";
+import { InfosIntervention } from "app/core/model/infosInterventions";
 
 import { ToastrService } from "ngx-toastr";
 
 @Injectable({ providedIn: "root" })
 export class SharedService {
   email = "";
+  listAllInterventions: InfosIntervention[] = [];
 }
 
 @Component({
@@ -96,21 +98,9 @@ export class RechercheComponent implements AfterViewInit {
       });
   }
 
-  listAllInterventions: Intervention[] = [
-    {
-      timeIntervention: null,
-      jour: 0,
-      matin: 1,
-      midi: 1,
-      soir: 0,
-      emailFamille: "",
-      emailNounou: "essaid.brahiti@gmail.com",
-    },
-  ];
-
   getAllInterventions() {
     this.searchService.getAllInterventions().subscribe((resp) => {
-      console.log(resp);
+      this.sharedService.listAllInterventions = [...resp];
     });
   }
 
@@ -119,7 +109,9 @@ export class RechercheComponent implements AfterViewInit {
   }
 
   checkDisabled(email: string): boolean {
-    return this.listAllInterventions.some((e) => e.emailNounou == email);
+    return this.sharedService.listAllInterventions.some(
+      (e) => e.emailNounou == email
+    );
   }
 }
 
@@ -164,7 +156,8 @@ export class DialogElements {
     private besoinService: BesoinsService,
     private searchService: SearchService,
     private sharedService: SharedService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) {
     this._locale = "fr";
     this._adapter.setLocale(this._locale);
@@ -178,14 +171,12 @@ export class DialogElements {
         this.searchService
           .getDisponibilitesNounou(this.sharedService.email)
           .subscribe((resp) => {
-            console.log(resp);
             this.setDisponibilitesNounou(resp);
           });
       });
   }
 
   saveIntervention(): void {
-    console.log(this.sharedService.email);
     if (this.range.value.start == null || this.range.value.end == null) {
       this.toastr.error("Veuillez selectionner une période valide !");
       return;
@@ -200,19 +191,25 @@ export class DialogElements {
         if (d.matin || d.midi || d.soir) {
           dataIntervention.push({
             timeIntervention: null,
-            jour: d.jour,
-            matin: d.matin ? 1 : 0,
-            midi: d.midi ? 1 : 0,
-            soir: d.soir ? 1 : 0,
+            debutIntervention: this.range.value.start,
+            finIntervention: this.range.value.end,
+            jour: d.name,
+            matin: d.rangeMat == "" ? " -- " : d.rangeMat,
+            midi: d.rangeMid == "" ? " -- " : d.rangeMid,
+            soir: d.rangeSoi == "" ? " -- " : d.rangeSoi,
             emailFamille: "",
             emailNounou: this.sharedService.email,
+            etat: "Instance",
           });
         }
       });
       this.searchService
         .createIntervention(dataIntervention)
         .subscribe(async (resp: any) => {
-          console.log(resp);
+          this.toastr.success("Intervention enregistrée avec succès !");
+          //this.sharedService.listAllInterventions.push(...dataIntervention);
+          console.log(this.sharedService.listAllInterventions);
+          this.dialog.closeAll();
         });
     }
   }
@@ -299,20 +296,23 @@ export class DialogElements {
         value.besoin_matin_debut == null
           ? ""
           : value.besoin_matin_debut.slice(0, 2) +
-            " - " +
-            value.besoin_matin_fin.slice(0, 2),
+            "h - " +
+            value.besoin_matin_fin.slice(0, 2) +
+            "h",
       rangeMid:
         value.besoin_midi_debut == null
           ? ""
           : value.besoin_midi_debut.slice(0, 2) +
-            " - " +
-            value.besoin_midi_fin.slice(0, 2),
+            "h - " +
+            value.besoin_midi_fin.slice(0, 2) +
+            "h",
       rangeSoi:
         value.besoin_soir_debut == null
           ? ""
           : value.besoin_soir_debut.slice(0, 2) +
-            " - " +
-            value.besoin_soir_fin.slice(0, 2),
+            "h - " +
+            value.besoin_soir_fin.slice(0, 2) +
+            "h",
     };
   }
 

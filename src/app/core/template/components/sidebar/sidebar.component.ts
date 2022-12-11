@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    this.timeInterval = interval(50000)
+    this.timeInterval = interval(5000)
       .pipe(
         startWith(0),
         switchMap(() => this.chatService.getUnreadMessages())

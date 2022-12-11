@@ -1,1 +1,80 @@
-<h1>Fonctionnalité à développer</h1>
+<div
+  style="margin-top: 35px; text-align: center"
+  *ngIf="listAllInterventions.length == 0"
+>
+  Aucune intervention enregistrée pour le moment. Cliquez sur
+  <a href="/recherche">Ajouter une intervention</a> pour rechercher et ajouter
+  une nounou
+</div>
+<div
+  style="margin-top: 20px; margin-bottom: -10px"
+  class="example-action-buttons"
+  *ngIf="listAllInterventions.length > 0"
+>
+  <button mat-button (click)="accordion.openAll()">Ouvrir Tout</button>
+  <button mat-button (click)="accordion.closeAll()">Fermer Tout</button>
+</div>
+<mat-accordion
+  class="example-headers-align"
+  multi
+  *ngFor="let el of listAllInterventions"
+>
+  <mat-expansion-panel style="margin-top: 10px">
+    <mat-expansion-panel-header>
+      <mat-panel-title> {{ el.nom }} {{ el.prenom }} </mat-panel-title>
+      <mat-panel-description>
+        {{ el.detailIntervention.length }}
+        {{
+          el.detailIntervention.length > 1 ? "interventions" : "intervention"
+        }}
+        / semaine - du {{ el.periode }} - {{ el.etat }} -
+        <a> Annuler </a>
+        <a> {{ el.etat == "Instance" ? "Relancer" : "Renouveller" }} </a>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <table
+      mat-table
+      [dataSource]="el.detailIntervention"
+      class="mat-elevation-z8"
+      style="background: bottom"
+    >
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef>Jour</th>
+        <td mat-cell *matCellDef="let element">{{ element.jour }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center">
+          Matin
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.matin }}
+        </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="weight">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center">
+          Midi
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.midi }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="symbol">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center">
+          Soir
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.soir }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-expansion-panel>
+</mat-accordion>

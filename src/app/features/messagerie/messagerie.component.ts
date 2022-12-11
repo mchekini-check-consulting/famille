@@ -85,7 +85,7 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.timeInterval = interval(50000)
+    this.timeInterval = interval(5000)
       .pipe(
         startWith(0),
         switchMap(() => this.chatService.getChatFamille())
@@ -95,7 +95,7 @@ export class MessagerieComponent implements OnInit, AfterViewChecked {
         (err) => console.log("HTTP Error", err)
       );
 
-    this.timeInterval = interval(50000)
+    this.timeInterval = interval(5000)
       .pipe(
         startWith(0),
         switchMap(() => this.chatService.getUnreadMessagesByNounou())

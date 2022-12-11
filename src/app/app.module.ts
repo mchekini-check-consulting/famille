@@ -21,6 +21,7 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTableModule } from "@angular/material/table";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { MatTableModule } from "@angular/material/table";
     MatNativeDateModule,
     MatSelectModule,
     MatTableModule,
+    MatExpansionModule,
   ],
   declarations: [AppComponent],
   providers: [

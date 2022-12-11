@@ -22,6 +22,7 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { MatSelectModule } from "@angular/material/select";
     MatDatepickerModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatExpansionModule,
   ],
 })
 export class FeaturesModule {}

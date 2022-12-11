@@ -8,7 +8,7 @@
         appearance="fill"
         style="margin-top: 10px; margin-bottom: -30px; width: 290px"
       >
-        <mat-label>Choisir date de début et date fin</mat-label>
+        <mat-label>Choisir date début et date fin</mat-label>
         <mat-date-range-input
           [formGroup]="range"
           [rangePicker]="picker"
@@ -147,36 +147,45 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Confirmer ma demande</ng-template>
-      <p style="margin-top: 20px">
-        Veuillez cliquer sur <span style="color: blue">Valider</span> pour
-        envoyer votre demande <br />Ou sur
-        <span style="color: red">Réinitialiser</span> pour tout remettre à vide
-      </p>
-      <div style="margin-top: 20px">
-        <button mat-button matStepperPrevious style="font-size: 16px">
-          Back
-        </button>
-        <button
-          mat-button
-          style="font-size: 16px"
-          color="warn"
-          (click)="stepper.reset()"
-        >
-          Réinitialiser
-        </button>
-        <button
-          mat-button
-          style="font-size: 16px"
-          color="primary"
-          (click)="saveIntervention()"
-        >
-          Valider
-        </button>
+      <div style="margin-left: -20px">
+        <p style="margin-top: 20px">
+          Veuillez cliquer sur <span style="color: blue">Valider</span> pour
+          envoyer votre demande <br />Ou sur
+          <span style="color: red">Réinitialiser</span> pour tout remettre à
+          vide
+        </p>
+        <div style="margin-top: 20px">
+          <button
+            class="btn btn-warning"
+            matStepperPrevious
+            style="font-size: 16px; margin-right: 10px"
+          >
+            Back
+          </button>
+          <button
+            class="btn btn-danger"
+            style="font-size: 16px; margin-right: 10px"
+            color="warn"
+            (click)="stepper.reset()"
+          >
+            Réinitialiser
+          </button>
+          <button
+            class="btn btn-primary"
+            style="font-size: 16px"
+            color="primary"
+            (click)="saveIntervention()"
+          >
+            Valider
+          </button>
+        </div>
       </div>
     </mat-step>
   </mat-stepper>
 </div>
 <hr />
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Quitter sans enregistrer</button>
+  <button class="btn btn-secondary" mat-dialog-close>
+    Quitter sans enregistrer
+  </button>
 </div>
