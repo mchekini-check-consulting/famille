@@ -14,6 +14,14 @@ import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { PushNotificationsModule } from "ng-push-ivy";
 
 import { DatePipe } from "@angular/common";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { MatTableModule } from "@angular/material/table";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
   imports: [
@@ -27,6 +35,14 @@ import { DatePipe } from "@angular/common";
     ToastrModule.forRoot(),
     NgxUiLoaderModule,
     PushNotificationsModule,
+    MatDialogModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatTableModule,
+    MatExpansionModule,
   ],
   declarations: [AppComponent],
   providers: [

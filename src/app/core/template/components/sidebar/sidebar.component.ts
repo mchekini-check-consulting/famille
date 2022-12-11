@@ -18,7 +18,7 @@ export const ROUTES: RouteInfo[] = [
   { path: "/messagerie", title: "Messagerie", icon: "pe-7s-graph", class: "" },
   {
     path: "/historique",
-    title: "Historique",
+    title: "Interventions",
     icon: "pe-7s-map-marker",
     class: "",
   },
