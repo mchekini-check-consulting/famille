@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { PushNotificationsService } from "ng-push-ivy";
 import { WebsocketService } from "../shared/services/websocket.service";
 import { NotificationService } from "../shared/services/notification.service";
 import { AppNotification } from "../shared/model/app-notification";
@@ -18,11 +17,9 @@ export class NotificationComponent implements OnInit {
   counter: number;
 
   constructor(
-    private pushNotifications: PushNotificationsService,
     private notificationService: NotificationService,
     private websocketService: WebsocketService
   ) {
-    this.pushNotifications.requestPermission();
     this.counter = 0;
   }
 
@@ -49,9 +46,5 @@ export class NotificationComponent implements OnInit {
       body: message.content,
       icon: icon.get(message.type.toLowerCase()),
     };
-    this.pushNotifications.create("New Alert", options).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    );
   }
 }

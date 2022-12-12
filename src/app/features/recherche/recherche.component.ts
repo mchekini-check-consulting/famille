@@ -40,6 +40,9 @@ export class RechercheComponent implements AfterViewInit {
     nom: new FormControl(""),
     prenom: new FormControl(""),
     ville: new FormControl(""),
+    jour: new FormControl(""),
+    heureDebut: new FormControl(""),
+    heureFin: new FormControl(""),
   });
 
   data: Nounou[] = [];
@@ -52,6 +55,17 @@ export class RechercheComponent implements AfterViewInit {
     "mail",
     "contact",
   ];
+
+  jours: string[] = [
+    'Samedi',
+    'Dimanche',
+    'Lundi',
+    'Mardi',
+    'Mercredi',
+    'Jeudi',
+    'Vendredi'
+  ];
+
   dataSource = new MatTableDataSource<Nounou>(this.data);
   closeResult: string;
 
@@ -60,7 +74,8 @@ export class RechercheComponent implements AfterViewInit {
     private _router: Router,
     public dialog: MatDialog,
     private searchService: SearchService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private toastr: ToastrService
   ) {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -82,6 +97,13 @@ export class RechercheComponent implements AfterViewInit {
     const nom = this.myForm.get("nom").value;
     const prenom = this.myForm.get("prenom").value;
     const ville = this.myForm.get("ville").value;
+    const jour = this.myForm.get("jour").value === '' ? -1 : this.myForm.get("jour").value;
+    const heureDebut = this.myForm.get("heureDebut").value;
+    const heureFin = this.myForm.get("heureFin").value;
+    if (heureDebut && heureFin && heureFin < heureDebut) {
+      this.toastr.error("L'heure de fin ne peut pas être inférieure à l'heure de début")
+      return
+    }
     this.http
       .get<Nounou[]>(
         "api/v1/search/nounou?nom=" +
@@ -89,7 +111,13 @@ export class RechercheComponent implements AfterViewInit {
           "&prenom=" +
           prenom +
           "&ville=" +
-          ville
+          ville +
+          "&jour=" +
+          jour +
+          "&heureDebut=" +
+          heureDebut +
+          "&heureFin=" +
+          heureFin
       )
       .subscribe((resp) => {
         console.log(resp);

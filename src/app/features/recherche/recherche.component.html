@@ -56,6 +56,36 @@
                 </div>
 
                 <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Jour</label>
+                      <!-- <input formControlName="jour" type="text" class="form-control"
+                          placeholder="Jour" /> -->
+                      <select formControlName="jour" class="form-control">
+                        <option value=""></option>
+                        <option *ngFor="let jour of jours" [ngValue]="jours.indexOf(jour)">
+                          {{ jour }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heure de début</label>
+                      <input formControlName="heureDebut" type="time" class="form-control"
+                             placeholder="Heure de début" />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heure de fin</label>
+                      <input formControlName="heureFin" type="time" class="form-control"
+                             placeholder="Heure de fin" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
                   <div class="col-md-12"></div>
                 </div>
                 <button
