@@ -57,13 +57,13 @@ export class RechercheComponent implements AfterViewInit {
   ];
 
   jours: string[] = [
-    'Samedi',
-    'Dimanche',
-    'Lundi',
-    'Mardi',
-    'Mercredi',
-    'Jeudi',
-    'Vendredi'
+    "Samedi",
+    "Dimanche",
+    "Lundi",
+    "Mardi",
+    "Mercredi",
+    "Jeudi",
+    "Vendredi",
   ];
 
   dataSource = new MatTableDataSource<Nounou>(this.data);
@@ -97,12 +97,15 @@ export class RechercheComponent implements AfterViewInit {
     const nom = this.myForm.get("nom").value;
     const prenom = this.myForm.get("prenom").value;
     const ville = this.myForm.get("ville").value;
-    const jour = this.myForm.get("jour").value === '' ? -1 : this.myForm.get("jour").value;
+    const jour =
+      this.myForm.get("jour").value === "" ? -1 : this.myForm.get("jour").value;
     const heureDebut = this.myForm.get("heureDebut").value;
     const heureFin = this.myForm.get("heureFin").value;
     if (heureDebut && heureFin && heureFin < heureDebut) {
-      this.toastr.error("L'heure de fin ne peut pas être inférieure à l'heure de début")
-      return
+      this.toastr.error(
+        "L'heure de fin ne peut pas être inférieure à l'heure de début"
+      );
+      return;
     }
     this.http
       .get<Nounou[]>(
@@ -145,7 +148,7 @@ export class RechercheComponent implements AfterViewInit {
 
 @Component({
   selector: "dialog-elements",
-  templateUrl: "dialog-elements.html",
+  templateUrl: "./dialog-elements.html",
 })
 export class DialogElements {
   isLinear = true;

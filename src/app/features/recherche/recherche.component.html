@@ -63,7 +63,10 @@
                           placeholder="Jour" /> -->
                       <select formControlName="jour" class="form-control">
                         <option value=""></option>
-                        <option *ngFor="let jour of jours" [ngValue]="jours.indexOf(jour)">
+                        <option
+                          *ngFor="let jour of jours"
+                          [ngValue]="jours.indexOf(jour)"
+                        >
                           {{ jour }}
                         </option>
                       </select>
@@ -72,15 +75,23 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label>Heure de début</label>
-                      <input formControlName="heureDebut" type="time" class="form-control"
-                             placeholder="Heure de début" />
+                      <input
+                        formControlName="heureDebut"
+                        type="time"
+                        class="form-control"
+                        placeholder="Heure de début"
+                      />
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label>Heure de fin</label>
-                      <input formControlName="heureFin" type="time" class="form-control"
-                             placeholder="Heure de fin" />
+                      <input
+                        formControlName="heureFin"
+                        type="time"
+                        class="form-control"
+                        placeholder="Heure de fin"
+                      />
                     </div>
                   </div>
                 </div>
@@ -105,14 +116,8 @@
   </div>
 </div>
 
-<br />
-
-<div class="mat-elevation-z8">
-  <table
-    style="margin-left: 2%; width: 96%"
-    mat-table
-    [dataSource]="dataSource"
-  >
+<div class="mat-elevation-z8" style="padding: 25px">
+  <table mat-table [dataSource]="dataSource">
     <!-- Position Column -->
     <ng-container matColumnDef="nom">
       <th mat-header-cell *matHeaderCellDef>Nom</th>

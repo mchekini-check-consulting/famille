@@ -7,7 +7,7 @@
   une nounou
 </div>
 <div
-  style="margin-top: 20px; margin-bottom: -10px"
+  style="margin-top: 20px; margin-bottom: -10px; width: 94%; margin-left: 2%"
   class="example-action-buttons"
   *ngIf="listAllInterventions.length > 0"
 >
@@ -19,17 +19,66 @@
   multi
   *ngFor="let el of listAllInterventions"
 >
-  <mat-expansion-panel style="margin-top: 10px">
+  <mat-expansion-panel
+    style="margin-top: 10px; padding: 1%; width: 94%; margin-left: 2%"
+  >
     <mat-expansion-panel-header>
-      <mat-panel-title> {{ el.nom }} {{ el.prenom }} </mat-panel-title>
-      <mat-panel-description>
-        {{ el.detailIntervention.length }}
-        {{
-          el.detailIntervention.length > 1 ? "interventions" : "intervention"
-        }}
-        / semaine - du {{ el.periode }} - {{ el.etat }} -
-        <a> Annuler </a>
-        <a> {{ el.etat == "Instance" ? "Relancer" : "Renouveller" }} </a>
+      <mat-panel-title style="max-width: 150px">
+        {{ el.nom }} {{ el.prenom }}
+      </mat-panel-title>
+      <mat-panel-description class="row">
+        <span
+          style="margin-right: 10px; text-align: center"
+          class="col-md-6 col-xl-8"
+        >
+          {{ el.detailIntervention.length }}
+          {{
+            el.detailIntervention.length > 1 ? "interventions" : "intervention"
+          }}
+          / semaine - du {{ el.periode }}
+        </span>
+        <span
+          *ngIf="el.etat == 'Instance'"
+          class="label label-warning col-md-2 col-xl-1"
+          style="
+            font-size: 15px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 100px;
+          "
+          >{{ el.etat }}
+        </span>
+        <span
+          *ngIf="el.etat == 'Confirmée'"
+          class="label label-success col-md-2 col-xl-1"
+          style="
+            font-size: 15px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 100px;
+          "
+          >{{ el.etat }}
+        </span>
+        <span class="col-md-4 col-xl-3" style="text-align: end">
+          <button
+            type="button"
+            class="btn btn-danger navbar-btn"
+            style="margin: 0px 5px; width: 100px"
+          >
+            Annuler
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary navbar-btn"
+            style="width: 100px"
+          >
+            {{ el.etat == "Instance" ? "Relancer" : "Renouveller" }}
+          </button>
+        </span>
+        <!--a> Annuler </a>
+        <a> {{ el.etat == "Instance" ? "Relancer" : "Renouveller" }} </a-->
       </mat-panel-description>
     </mat-expansion-panel-header>
     <table
