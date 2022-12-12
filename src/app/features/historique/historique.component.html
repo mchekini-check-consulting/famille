@@ -21,12 +21,13 @@
 >
   <mat-expansion-panel
     style="margin-top: 10px; padding: 1%; width: 94%; margin-left: 2%"
+    hideToggle
   >
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header style="padding-right: 0px">
       <mat-panel-title style="max-width: 150px">
         {{ el.nom }} {{ el.prenom }}
       </mat-panel-title>
-      <mat-panel-description class="row">
+      <mat-panel-description class="row" style="margin-right: 0px">
         <span
           style="margin-right: 10px; text-align: center"
           class="col-md-6 col-xl-8"
@@ -38,8 +39,32 @@
           / semaine - du {{ el.periode }}
         </span>
         <span
-          *ngIf="el.etat == 'Instance'"
+          *ngIf="el.etat == 'Rejetée'"
           class="label label-warning col-md-2 col-xl-1"
+          style="
+            font-size: 15px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 100px;
+          "
+          >{{ el.etat }}
+        </span>
+        <span
+          *ngIf="el.etat == 'Instance'"
+          class="label label-info col-md-2 col-xl-1"
+          style="
+            font-size: 15px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 100px;
+          "
+          >{{ el.etat }}
+        </span>
+        <span
+          *ngIf="el.etat == 'Annulée'"
+          class="label label-danger col-md-2 col-xl-1"
           style="
             font-size: 15px;
             text-align: center;
@@ -63,22 +88,33 @@
         </span>
         <span class="col-md-4 col-xl-3" style="text-align: end">
           <button
+            *ngIf="el.etat != 'Annulée'"
             type="button"
             class="btn btn-danger navbar-btn"
             style="margin: 0px 5px; width: 100px"
+            (click)="actionAnnuler(el.emailNounou)"
           >
             Annuler
           </button>
           <button
+            *ngIf="el.etat == 'Instance' || el.etat == 'Annulée'"
             type="button"
             class="btn btn-primary navbar-btn"
             style="width: 100px"
+            (click)="actionRelancer(el.emailNounou)"
           >
-            {{ el.etat == "Instance" ? "Relancer" : "Renouveller" }}
+            Relancer
+          </button>
+          <button
+            *ngIf="el.etat == 'Confirmée'"
+            type="button"
+            class="btn btn-primary navbar-btn"
+            style="width: 100px"
+            (click)="actionRenouveler()"
+          >
+            Renouveler
           </button>
         </span>
-        <!--a> Annuler </a>
-        <a> {{ el.etat == "Instance" ? "Relancer" : "Renouveller" }} </a-->
       </mat-panel-description>
     </mat-expansion-panel-header>
     <table
