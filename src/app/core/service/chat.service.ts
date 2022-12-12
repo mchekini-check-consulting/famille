@@ -20,7 +20,7 @@ export class ChatService {
   }
 
   getListNounous(): Observable<Nounou[]> {
-    return this.http.get<Nounou[]>("api/v1/search/nounou?nom=&prenom=&ville=");
+    return this.http.get<Nounou[]>("api/v1/search/nounou?nom=&prenom=&ville=&jour=-1&heureDebut=&heureFin=");
   }
 
   getUnreadMessages(): Observable<Number> {
