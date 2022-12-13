@@ -21,7 +21,9 @@
 >
   <mat-expansion-panel
     style="margin-top: 10px; padding: 1%; width: 94%; margin-left: 2%"
-    hideToggle
+    (afterCollapse)="afterCollapse(el.emailNounou)"
+    (afterExpand)="afterExpand(el.emailNounou)"
+    [expanded]="isExpand(el.emailNounou)"
   >
     <mat-expansion-panel-header style="padding-right: 0px">
       <mat-panel-title style="max-width: 150px">

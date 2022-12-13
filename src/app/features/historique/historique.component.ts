@@ -25,25 +25,60 @@ export class HistoriqueComponent implements OnInit {
 
   listAllInterventions: InfosIntervention[] = [];
 
+  expanded: stateExpand[] = [];
+
   displayedColumns: string[] = ["position", "name", "weight", "symbol"];
 
   timeInterval: Subscription;
 
+  afterCollapse(email: string): void {
+    const index = this.expanded.findIndex((exp) => exp.email == email);
+    if (index == -1) return;
+    this.expanded[index].state = false;
+  }
+
+  afterExpand(email: string): void {
+    const index = this.expanded.findIndex((exp) => exp.email == email);
+    if (index == -1) return;
+    this.expanded[index].state = true;
+  }
+
+  isExpand(email: string): boolean {
+    console.log(this.expanded);
+    const index = this.expanded.findIndex((exp) => exp.email == email);
+    if (index == -1) return false;
+    console.log(this.expanded[index].state);
+    return this.expanded[index].state;
+  }
+
   ngOnInit(): void {
+    this.getAllInterventions();
     this.timeInterval = interval(5000)
       .pipe(
         startWith(0),
         switchMap(() => this.searchService.getAllInterventions())
       )
       .subscribe(
-        (resp) => (this.listAllInterventions = [...resp]),
+        (resp) => (
+          (this.listAllInterventions = [...resp]), this.setStateExpand(resp)
+        ),
         (err) => console.log("HTTP Error", err)
       );
+  }
+
+  setStateExpand(resp: InfosIntervention[]): void {
+    // Vérifier pour les nouvelles insertions d'interventions
+    resp.map((e) => {
+      if (!this.expanded.find((exp) => exp.email == e.emailNounou)) {
+        this.expanded.push({ email: e.emailNounou, state: false });
+      }
+    });
   }
 
   getAllInterventions(): void {
     this.searchService.getAllInterventions().subscribe((resp) => {
       this.listAllInterventions = [...resp];
+      this.setStateExpand(resp);
     });
   }
 
@@ -72,4 +107,9 @@ export class HistoriqueComponent implements OnInit {
   actionRenouveler(): void {
     this.toastr.success("Action effectuée avec succès !");
   }
+}
+
+interface stateExpand {
+  email: string;
+  state: boolean;
 }

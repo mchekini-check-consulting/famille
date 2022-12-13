@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Intervention } from "../model/intervention";
 import { interventionApiUrl } from "../common";
 
 @Injectable({
