@@ -6,6 +6,10 @@ import { InterventionService } from "app/core/service/historique.service";
 
 import { ToastrService } from "ngx-toastr";
 
+import { interval } from "rxjs/internal/observable/interval";
+import { Subscription } from "rxjs";
+import { startWith, switchMap } from "rxjs/operators";
+
 @Component({
   selector: "app-historique",
   templateUrl: "./historique.component.html",
@@ -23,8 +27,18 @@ export class HistoriqueComponent implements OnInit {
 
   displayedColumns: string[] = ["position", "name", "weight", "symbol"];
 
+  timeInterval: Subscription;
+
   ngOnInit(): void {
-    this.getAllInterventions();
+    this.timeInterval = interval(5000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.searchService.getAllInterventions())
+      )
+      .subscribe(
+        (resp) => (this.listAllInterventions = [...resp]),
+        (err) => console.log("HTTP Error", err)
+      );
   }
 
   getAllInterventions(): void {
