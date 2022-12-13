@@ -23,6 +23,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     "/api/v1/famille/chat/get-unread-msg",
     "/api/v1/famille/chat/get-unread-msg-by-nounou",
     "/api/v1/famille/chat/set-msg-read",
+    "/api/v1/famille/intervention/get-all-interventions",
   ];
 
   intercept(
