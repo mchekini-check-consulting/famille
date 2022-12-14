@@ -52,6 +52,9 @@
             >{{ unread_messages }}</span
           >
         </p>
+        <p *ngIf="menuItem.title == 'Administration'">
+          {{ menuItem.title }}
+        </p>
       </a>
     </li>
   </ul>
