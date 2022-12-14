@@ -8,5 +8,5 @@ export const environment = {
 };
 
 export const apisUrls = {
-  familleApiUrl: '/api/v1/famille'
+  familleApiUrl: "/api/v1/famille",
 };

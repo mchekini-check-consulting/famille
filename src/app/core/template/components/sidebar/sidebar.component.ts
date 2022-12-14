@@ -4,6 +4,8 @@ import { Subscription } from "rxjs";
 import { startWith, switchMap } from "rxjs/operators";
 
 import { ChatService } from "../../../service/chat.service";
+import { OAuthService } from "angular-oauth2-oidc";
+import { filter } from "rxjs/operators";
 
 declare const $: any;
 declare interface RouteInfo {
@@ -33,12 +35,18 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: any[];
   unread_messages: Number = 0;
+  isAdmin: Boolean = false;
 
   timeInterval: Subscription;
 
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private chatService: ChatService,
+    private oauthService: OAuthService
+  ) {}
 
   ngOnInit() {
+    console.log(this.oauthService.getIdentityClaims()["role"]);
+    console.log(this.oauthService);
     this.timeInterval = interval(5000)
       .pipe(
         startWith(0),
