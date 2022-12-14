@@ -34,8 +34,21 @@
       class="{{ menuItem.class }}"
     >
       <a [routerLink]="[menuItem.path]">
-        <i class="{{ menuItem.icon }}"></i>
-        <p *ngIf="menuItem.title != 'Messagerie'">{{ menuItem.title }}</p>
+        <i
+          *ngIf="menuItem.title != 'Administration'"
+          class="{{ menuItem.icon }}"
+        ></i>
+        <i
+          *ngIf="menuItem.title == 'Administration' && isAdmin"
+          class="{{ menuItem.icon }}"
+        ></i>
+        <p
+          *ngIf="
+            menuItem.title != 'Messagerie' && menuItem.title != 'Administration'
+          "
+        >
+          {{ menuItem.title }}
+        </p>
         <p *ngIf="menuItem.title == 'Messagerie'">
           {{ menuItem.title }}
           <span
@@ -52,7 +65,7 @@
             >{{ unread_messages }}</span
           >
         </p>
-        <p *ngIf="menuItem.title == 'Administration'">
+        <p *ngIf="menuItem.title == 'Administration' && isAdmin">
           {{ menuItem.title }}
         </p>
       </a>
