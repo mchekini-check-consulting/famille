@@ -25,6 +25,7 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   { path: "/infos", title: "Mes informations", icon: "pe-7s-note2", class: "" },
+  { path: "/admin", title: "Administration", icon: "pe-7s-note2", class: "" },
 ];
 
 @Component({
