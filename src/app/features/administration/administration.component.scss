@@ -1,0 +1,16 @@
+.example-card {
+  max-width: 40%;
+  margin-left: 3%;
+  margin-top: 2%;
+}
+
+.example-header-image {
+  background-image: url('../../../assets/img/angular-red.png');
+  background-size: cover;
+}
+
+.admin-container {
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+}

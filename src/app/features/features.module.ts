@@ -23,6 +23,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { AdministrationComponent } from './administration/administration.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
     InfosComponent,
     NotificationComponent,
     DialogElements,
+    AdministrationComponent,
   ],
   imports: [
     CommonModule,

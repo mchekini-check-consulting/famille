@@ -8,6 +8,7 @@ import { RechercheComponent } from "./features/recherche/recherche.component";
 import { MessagerieComponent } from "./features/messagerie/messagerie.component";
 import { InfosComponent } from "./features/infos/infos.component";
 import { HistoriqueComponent } from "./features/historique/historique.component";
+import {AdministrationComponent} from "./features/administration/administration.component";
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
       {
         path: "historique",
         component: HistoriqueComponent,
+      },
+      {
+        path: "admin",
+        component: AdministrationComponent,
       },
     ],
   },
