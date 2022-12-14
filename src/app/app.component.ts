@@ -16,7 +16,9 @@ export class AppComponent {
   ) {
     if (!oauthService.hasValidIdToken()) {
       this.oauthService.configure(authCodeFlowConfig);
-      this.oauthService.loadDiscoveryDocumentAndLogin();
+      this.oauthService.loadDiscoveryDocumentAndLogin({
+        customHashFragment: window.location.search,
+      });
     }
     this.optionsService.getOptionsFamille().subscribe((data: Options) => {
       localStorage.setItem("options-autosave", data.autosave.toString());
