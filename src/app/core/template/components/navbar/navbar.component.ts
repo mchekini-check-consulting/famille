@@ -22,17 +22,18 @@ export class NavbarComponent implements OnInit {
   ) {
     this.location = location;
     this.sidebarVisible = false;
+    this.oauthService.events
+        .pipe(filter((e) => e.type === "token_received"))
+        .subscribe((_) => {
+          this.name = this.oauthService.getIdentityClaims()["name"];
+        });
   }
 
   ngOnInit() {
     this.listTitles = ROUTES.filter((listTitle) => listTitle);
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName("navbar-toggle")[0];
-    this.oauthService.events
-      .pipe(filter((e) => e.type === "token_received"))
-      .subscribe((_) => {
-        this.name = this.oauthService.getIdentityClaims()["name"];
-      });
+
   }
 
   sidebarOpen() {
