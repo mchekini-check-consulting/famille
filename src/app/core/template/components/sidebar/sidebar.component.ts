@@ -5,6 +5,7 @@ import { startWith, switchMap } from "rxjs/operators";
 
 import { ChatService } from "../../../service/chat.service";
 import { OAuthService } from "angular-oauth2-oidc";
+import { filter } from "rxjs";
 
 declare const $: any;
 declare interface RouteInfo {
@@ -45,7 +46,10 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isAdmin = this.oauthService.getIdentityClaims()["role"] == "admin";
+    this.isAdmin =
+      this.oauthService.getIdentityClaims() == null
+        ? false
+        : this.oauthService.getIdentityClaims()["role"] == "admin";
 
     this.timeInterval = interval(5000)
       .pipe(

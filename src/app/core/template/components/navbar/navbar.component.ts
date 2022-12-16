@@ -79,5 +79,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.oauthService.logOut();
+    sessionStorage.clear();
+    localStorage.clear();
   }
 }
