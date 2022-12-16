@@ -1,35 +1,35 @@
 export class BesoinsDay {
-  id_besoin: string;
+  idBesoin: string;
   jour: number;
-  besoin_matin_debut: number;
-  besoin_matin_fin: number;
-  besoin_midi_debut: number;
-  besoin_midi_fin: number;
-  besoin_soir_debut: number;
-  besoin_soir_fin: number;
+  besoinMatinDebut: number;
+  besoinMatinFin: number;
+  besoinMidiDebut: number;
+  besoinMidiFin: number;
+  besoinSoirDebut: number;
+  besoinSoirFin: number;
   type: string;
 }
 
 export class BesoinsMatin {
-  id_besoin: string;
+  idBesoin: string;
   jour: number;
-  besoin_matin_debut: number;
-  besoin_matin_fin: number;
+  besoinMatinDebut: number;
+  besoinMatinFin: number;
   type: string;
 }
 
 export class BesoinsMidi {
-  id_besoin: string;
+  idBesoin: string;
   jour: number;
-  besoin_midi_debut: number;
-  besoin_midi_fin: number;
+  besoinMidiDebut: number;
+  besoinMidiFin: number;
   type: string;
 }
 
 export class BesoinsSoir {
-  id_besoin: string;
+  idBesoin: string;
   jour: number;
-  besoin_soir_debut: number;
-  besoin_soir_fin: number;
+  besoinSoirDebut: number;
+  besoinSoirFin: number;
   type: string;
 }

@@ -308,41 +308,35 @@ export class DialogElements {
 
   setValueCheckedJour(index: number, dispo: DisponibiltesNounou): void {
     this.dataSource[index].dispoMat =
-      dispo.date_debut_matin == null && dispo.date_fin_matin == null
-        ? false
-        : true;
+      dispo.dateDebutMatin == null && dispo.dateFinMatin == null ? false : true;
     this.dataSource[index].dispoMid =
-      dispo.date_debut_midi == null && dispo.date_fin_midi == null
-        ? false
-        : true;
+      dispo.dateDebutMidi == null && dispo.dateFinMidi == null ? false : true;
     this.dataSource[index].dispoSoi =
-      dispo.date_debut_soir == null && dispo.date_fin_soir == null
-        ? false
-        : true;
+      dispo.dateDebutSoir == null && dispo.dateFinSoir == null ? false : true;
   }
 
   insertData(value: BesoinsFamille): any {
     return {
       rangeMat:
-        value.besoin_matin_debut == null
+        value.besoinMatinDebut == null
           ? ""
-          : value.besoin_matin_debut.slice(0, 2) +
+          : value.besoinMatinDebut.slice(0, 2) +
             "h - " +
-            value.besoin_matin_fin.slice(0, 2) +
+            value.besoinMatinFin.slice(0, 2) +
             "h",
       rangeMid:
-        value.besoin_midi_debut == null
+        value.besoinMidiDebut == null
           ? ""
-          : value.besoin_midi_debut.slice(0, 2) +
+          : value.besoinMidiDebut.slice(0, 2) +
             "h - " +
-            value.besoin_midi_fin.slice(0, 2) +
+            value.besoinMidiFin.slice(0, 2) +
             "h",
       rangeSoi:
-        value.besoin_soir_debut == null
+        value.besoinSoirDebut == null
           ? ""
-          : value.besoin_soir_debut.slice(0, 2) +
+          : value.besoinSoirDebut.slice(0, 2) +
             "h - " +
-            value.besoin_soir_fin.slice(0, 2) +
+            value.besoinSoirFin.slice(0, 2) +
             "h",
     };
   }
@@ -376,13 +370,13 @@ export interface PeriodicElement {
 }
 
 export interface BesoinsFamille {
-  besoin_matin_debut: string;
-  besoin_matin_fin: string;
-  besoin_midi_debut: string;
-  besoin_midi_fin: string;
-  besoin_soir_debut: string;
-  besoin_soir_fin: string;
+  besoinMatinDebut: string;
+  besoinMatinFin: string;
+  besoinMidiDebut: string;
+  besoinMidiFin: string;
+  besoinSoirDebut: string;
+  besoinSoirFin: string;
   emailFamille: string;
-  id_besoin: string;
+  iBesoin: string;
   jour: number;
 }
