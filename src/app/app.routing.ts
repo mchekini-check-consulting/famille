@@ -8,7 +8,8 @@ import { RechercheComponent } from "./features/recherche/recherche.component";
 import { MessagerieComponent } from "./features/messagerie/messagerie.component";
 import { InfosComponent } from "./features/infos/infos.component";
 import { HistoriqueComponent } from "./features/historique/historique.component";
-import {AdministrationComponent} from "./features/administration/administration.component";
+import { AdministrationComponent } from "./features/administration/administration.component";
+import { PendingChangesGuard } from "./features/besoins/pending-changes-guard";
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
       {
         path: "besoins",
         component: BesoinComponent,
+        canDeactivate: [PendingChangesGuard],
       },
       {
         path: "recherche",
