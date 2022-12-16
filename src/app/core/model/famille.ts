@@ -2,7 +2,9 @@ export class Famille {
     mail: string;
     nom: string;
     prenom: string;
-    adresse: string;
+    rue : string;
+    codePostal : string;
+    ville : string
     telephone: string;
     pseudo: string;
 }

@@ -81,16 +81,42 @@
               </div>
 
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4">
                   <div class="form-group">
-                    <label>Addresse</label>
+                    <label>N° de Rue</label>
                     <input
-                      name="adresse"
+                      name="nRue"
                       type="text"
                       class="form-control"
-                      placeholder="Votre adresse"
-                      [value]="user.adresse"
+                      placeholder="Rue"
+                      [value]="user.rue"
                       (change)="handleForm($event)"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Code Postal</label>
+                    <input
+                            name="codePostal"
+                            type="text"
+                            class="form-control"
+                            placeholder="Votre adresse"
+                            [value]="user.codePostal"
+                            (change)="handleForm($event)"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Ville</label>
+                    <input
+                            name="ville"
+                            type="text"
+                            class="form-control"
+                            placeholder="Votre adresse"
+                            [value]="user.ville"
+                            (change)="handleForm($event)"
                     />
                   </div>
                 </div>
