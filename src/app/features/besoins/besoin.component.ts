@@ -6,6 +6,10 @@ import { BesoinsService } from "../../core/service/besoins.service";
 import { OptionsService } from "app/core/service/options.service";
 import { BesoinsDay } from "app/core/model/besoins";
 
+import { ComponentCanDeactivate } from "./pending-changes-guard";
+import { HostListener } from "@angular/core";
+import { Observable } from "rxjs";
+
 export interface Header {
   color: string;
   text: string;
@@ -53,7 +57,7 @@ export interface modelBesoins {
     `,
   ],
 })
-export class BesoinComponent implements OnInit {
+export class BesoinComponent implements OnInit, ComponentCanDeactivate {
   result: boolean;
   autosave: boolean = false;
   resultVal: number;
@@ -67,6 +71,11 @@ export class BesoinComponent implements OnInit {
     private besoinService: BesoinsService,
     private optionsService: OptionsService
   ) {}
+
+  @HostListener("window:beforeunload")
+  canDeactivate(): Observable<boolean> | boolean {
+    return this.changes.length == 0 ? true : false;
+  }
 
   headers: Header[] = [
     { text: "Matin", color: "lightpink" },
