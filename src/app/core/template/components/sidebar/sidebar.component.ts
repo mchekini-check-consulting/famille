@@ -5,15 +5,16 @@ import { startWith, switchMap } from "rxjs/operators";
 
 import { ChatService } from "../../../service/chat.service";
 import { OAuthService } from "angular-oauth2-oidc";
-import { filter } from "rxjs";
 
 declare const $: any;
+
 declare interface RouteInfo {
   path: string;
   title: string;
   icon: string;
   class: string;
 }
+
 export const ROUTES: RouteInfo[] = [
   { path: "/besoins", title: "Besoins", icon: "pe-7s-bell", class: "" },
   { path: "/recherche", title: "Recherche", icon: "pe-7s-science", class: "" },
@@ -43,13 +44,12 @@ export class SidebarComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private oauthService: OAuthService
-  ) {}
+  ) {
+    this.menuItems = ROUTES.filter((menuItem) => menuItem);
+  }
 
   ngOnInit() {
-    this.isAdmin =
-      this.oauthService.getIdentityClaims() == null
-        ? false
-        : this.oauthService.getIdentityClaims()["role"] == "admin";
+    this.isAdmin = this.oauthService.getIdentityClaims()["role"] == "admin";
 
     this.timeInterval = interval(5000)
       .pipe(
@@ -60,8 +60,8 @@ export class SidebarComponent implements OnInit {
         (resp) => (this.unread_messages = resp),
         (err) => console.log("HTTP Error", err)
       );
-    this.menuItems = ROUTES.filter((menuItem) => menuItem);
   }
+
   isMobileMenu() {
     if ($(window).width() > 991) {
       return false;
