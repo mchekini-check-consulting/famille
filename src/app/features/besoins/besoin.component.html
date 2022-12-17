@@ -155,7 +155,8 @@
     </div>
   </mat-card-content>
 </mat-card>
-
+<button type="button" mat-raised-button color="warn" (click)="onDelete()"
+        [disabled]="isOldTableEmpty()">Supprimer toutes les disponibilités</button>
 
 <button
         type="button"

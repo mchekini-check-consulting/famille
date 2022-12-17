@@ -5,10 +5,26 @@ import { ToastrService } from "ngx-toastr";
 import { BesoinsService } from "../../core/service/besoins.service";
 import { OptionsService } from "app/core/service/options.service";
 import { BesoinsDay } from "app/core/model/besoins";
+import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {HttpErrorResponse} from "@angular/common/http";
+import {InfosService} from "../../core/service/famille.service";
+import {Famille} from "../../core/model/famille";
+import * as _ from 'lodash'
 
+declare interface TableRow {
+  jour: string
+  matin: boolean
+  midi: boolean
+  soir: boolean
+}
 export interface Header {
   color: string;
   text: string;
+}
+declare interface TableData {
+  headerRow: string[]
+  dataRows: TableRow[]
 }
 
 export interface Jours {
@@ -54,6 +70,20 @@ export interface modelBesoins {
   ],
 })
 export class BesoinComponent implements OnInit {
+  emptyTable: TableData = {
+    headerRow: ['', 'Matin', 'Midi', 'Soir'],
+    dataRows: [
+      { jour: 'Samedi', matin: false, midi: false, soir: false },
+      { jour: 'Dimanche', matin: false, midi: false, soir: false },
+      { jour: 'Lundi', matin: false, midi: false, soir: false },
+      { jour: 'Mardi', matin: false, midi: false, soir: false },
+      { jour: 'Mercredi', matin: false, midi: false, soir: false },
+      { jour: 'Jeudi', matin: false, midi: false, soir: false },
+      { jour: 'Vendredi', matin: false, midi: false, soir: false },
+    ]
+  }
+  user: Famille;
+  initialUser: Famille;
   result: boolean;
   autosave: boolean = false;
   resultVal: number;
@@ -61,11 +91,15 @@ export class BesoinComponent implements OnInit {
   initData: Data[] = [];
   changes: Data[] = [];
   initialBesoins: modelBesoins[] = [];
+  tableData: TableData = _.cloneDeep(this.emptyTable)
+  tableDataOld: TableData = _.cloneDeep(this.emptyTable)
 
   constructor(
     private toastr: ToastrService,
     private besoinService: BesoinsService,
-    private optionsService: OptionsService
+    private optionsService: OptionsService,
+    private userService: InfosService,
+    public dialog: MatDialog
   ) {}
 
   headers: Header[] = [
@@ -91,6 +125,10 @@ export class BesoinComponent implements OnInit {
 
   ngOnInit(): void {
     //this.autosave = localStorage.getItem("options-autosave") == "true" ? true : false;
+    this.userService.getInfosFamille().subscribe((data: Famille) => {
+      this.user = data;
+      this.initialUser = {...data};
+    });
     let localData = {
       id_besoin: null,
       id: null,
@@ -508,6 +546,41 @@ export class BesoinComponent implements OnInit {
         this.data[index].highValue = val;
       }
     }
+  }
+  onDelete(): void {
+    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '35%',
+      height: '25%',
+      hasBackdrop: true,
+      data: {
+        title: 'Suppression',
+        content: 'Voulez-vous vraiment supprimer toutes vos disponibilités ?'
+      }
+    })
+    dialogRef.afterClosed().subscribe({
+      next: (response: boolean) => {
+        if (response) {
+          this.deleteBesoinsByFamille()
+        }
+      }
+    })
+  }
+  deleteBesoinsByFamille() {
+    this.besoinService.deleteBesoin(this.user.mail).subscribe({
+      next: () => {
+        this.toastr.success('Besoins Supprimés avec succes')
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error(error.message)
+        this.toastr.error('Il y a eu un souci lors de la suppression de vos Disponibilités')
+      }
+    })
+  }
+  isOldTableEmpty(): boolean {
+    return _.isEqual(this.tableDataOld, this.emptyTable)
+  }
+  isTableEmpty(): boolean {
+    return _.isEqual(this.tableData, this.emptyTable)
   }
 
   options: Options = {

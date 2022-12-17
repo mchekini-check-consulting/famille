@@ -43,6 +43,7 @@ import {FeaturesModule} from "./features/features.module";
     MatSelectModule,
     MatTableModule,
     MatExpansionModule,
+    MatDialogModule
   ],
   declarations: [AppComponent],
   providers: [
