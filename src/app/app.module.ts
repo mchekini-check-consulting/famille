@@ -21,7 +21,9 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTableModule } from "@angular/material/table";
 import { MatExpansionModule } from "@angular/material/expansion";
-import {FeaturesModule} from "./features/features.module";
+import { FeaturesModule } from "./features/features.module";
+
+import { PendingChangesGuard } from "./features/besoins/pending-changes-guard";
 
 @NgModule({
   imports: [
@@ -46,6 +48,7 @@ import {FeaturesModule} from "./features/features.module";
   ],
   declarations: [AppComponent],
   providers: [
+    PendingChangesGuard,
     DatePipe,
     {
       provide: HTTP_INTERCEPTORS,

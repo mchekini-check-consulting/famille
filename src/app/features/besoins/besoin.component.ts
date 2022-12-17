@@ -6,6 +6,10 @@ import { BesoinsService } from "../../core/service/besoins.service";
 import { OptionsService } from "app/core/service/options.service";
 import { BesoinsDay } from "app/core/model/besoins";
 
+import { ComponentCanDeactivate } from "./pending-changes-guard";
+import { HostListener } from "@angular/core";
+import { Observable } from "rxjs";
+
 export interface Header {
   color: string;
   text: string;
@@ -19,7 +23,7 @@ export interface Jours {
 }
 
 export interface Data {
-  id_besoin: string;
+  idBesoin: string;
   id: string;
   jour: number;
   value: boolean;
@@ -28,14 +32,14 @@ export interface Data {
 }
 
 export interface modelBesoins {
-  id_besoin: string;
+  idBesoin: string;
   jour: number;
-  besoin_matin_debut: string;
-  besoin_matin_fin: string;
-  besoin_midi_debut: string;
-  besoin_midi_fin: string;
-  besoin_soir_debut: string;
-  besoin_soir_fin: string;
+  besoinMatinDebut: string;
+  besoinMatinFin: string;
+  besoinMidiDebut: string;
+  besoinMidiFin: string;
+  besoinSoirDebut: string;
+  besoinSoirFin: string;
 }
 
 @Component({
@@ -53,7 +57,7 @@ export interface modelBesoins {
     `,
   ],
 })
-export class BesoinComponent implements OnInit {
+export class BesoinComponent implements OnInit, ComponentCanDeactivate {
   result: boolean;
   autosave: boolean = false;
   resultVal: number;
@@ -67,6 +71,11 @@ export class BesoinComponent implements OnInit {
     private besoinService: BesoinsService,
     private optionsService: OptionsService
   ) {}
+
+  @HostListener("window:beforeunload")
+  canDeactivate(): Observable<boolean> | boolean {
+    return this.changes.length == 0 ? true : false;
+  }
 
   headers: Header[] = [
     { text: "Matin", color: "lightpink" },
@@ -92,7 +101,7 @@ export class BesoinComponent implements OnInit {
   ngOnInit(): void {
     //this.autosave = localStorage.getItem("options-autosave") == "true" ? true : false;
     let localData = {
-      id_besoin: null,
+      idBesoin: null,
       id: null,
       jour: null,
       value: true,
@@ -103,38 +112,38 @@ export class BesoinComponent implements OnInit {
       this.initialBesoins = [...resp];
       this.data = this.data.filter((e) => !e.value); // Supprimer toutes les données validées
       resp.map((v: modelBesoins) => {
-        if (v.besoin_matin_debut != null) {
+        if (v.besoinMatinDebut != null) {
           localData = {
-            id_besoin: v.id_besoin,
+            idBesoin: v.idBesoin,
             id: v.jour.toString() + "mat",
             jour: v.jour,
             value: true,
-            lowValue: Number(v.besoin_matin_debut.substring(0, 2)),
-            highValue: Number(v.besoin_matin_fin.substring(0, 2)),
+            lowValue: Number(v.besoinMatinDebut.substring(0, 2)),
+            highValue: Number(v.besoinMatinFin.substring(0, 2)),
           };
           this.data.push(localData);
           this.initData.push(localData);
         }
-        if (v.besoin_midi_debut != null) {
+        if (v.besoinMidiDebut != null) {
           localData = {
-            id_besoin: v.id_besoin,
+            idBesoin: v.idBesoin,
             id: v.jour.toString() + "mid",
             jour: v.jour,
             value: true,
-            lowValue: Number(v.besoin_midi_debut.substring(0, 2)),
-            highValue: Number(v.besoin_midi_fin.substring(0, 2)),
+            lowValue: Number(v.besoinMidiDebut.substring(0, 2)),
+            highValue: Number(v.besoinMidiFin.substring(0, 2)),
           };
           this.data.push(localData);
           this.initData.push(localData);
         }
-        if (v.besoin_soir_debut != null) {
+        if (v.besoinSoirDebut != null) {
           localData = {
-            id_besoin: v.id_besoin,
+            idBesoin: v.idBesoin,
             id: v.jour.toString() + "soi",
             jour: v.jour,
             value: true,
-            lowValue: Number(v.besoin_soir_debut.substring(0, 2)),
-            highValue: Number(v.besoin_soir_fin.substring(0, 2)),
+            lowValue: Number(v.besoinSoirDebut.substring(0, 2)),
+            highValue: Number(v.besoinSoirFin.substring(0, 2)),
           };
           this.data.push(localData);
           this.initData.push(localData);
@@ -166,14 +175,14 @@ export class BesoinComponent implements OnInit {
     this.changes.map((e) => {
       let per = e.id.slice(1);
       tabChangesToSave.push({
-        id_besoin: e.id_besoin,
+        idBesoin: e.idBesoin,
         jour: e.jour,
-        besoin_matin_debut: !e.value ? null : per == "mat" ? e.lowValue : null,
-        besoin_matin_fin: !e.value ? null : per == "mat" ? e.highValue : null,
-        besoin_midi_debut: !e.value ? null : per == "mid" ? e.lowValue : null,
-        besoin_midi_fin: !e.value ? null : per == "mid" ? e.highValue : null,
-        besoin_soir_debut: !e.value ? null : per == "soi" ? e.lowValue : null,
-        besoin_soir_fin: !e.value ? null : per == "soi" ? e.highValue : null,
+        besoinMatinDebut: !e.value ? null : per == "mat" ? e.lowValue : null,
+        besoinMatinFin: !e.value ? null : per == "mat" ? e.highValue : null,
+        besoinMidiDebut: !e.value ? null : per == "mid" ? e.lowValue : null,
+        besoinMidiFin: !e.value ? null : per == "mid" ? e.highValue : null,
+        besoinSoirDebut: !e.value ? null : per == "soi" ? e.lowValue : null,
+        besoinSoirFin: !e.value ? null : per == "soi" ? e.highValue : null,
         type: per,
       });
     });
@@ -261,22 +270,22 @@ export class BesoinComponent implements OnInit {
   equalsBesoins(currentChange: Data): boolean {
     for (var e of this.initialBesoins) {
       const matDeb = Number(
-        e.besoin_matin_debut == null ? -1 : e.besoin_matin_debut.substring(0, 2)
+        e.besoinMatinDebut == null ? -1 : e.besoinMatinDebut.substring(0, 2)
       );
       const matFin = Number(
-        e.besoin_matin_fin == null ? -1 : e.besoin_matin_fin.substring(0, 2)
+        e.besoinMatinFin == null ? -1 : e.besoinMatinFin.substring(0, 2)
       );
       const midDeb = Number(
-        e.besoin_midi_debut == null ? -1 : e.besoin_midi_debut.substring(0, 2)
+        e.besoinMidiDebut == null ? -1 : e.besoinMidiDebut.substring(0, 2)
       );
       const midFin = Number(
-        e.besoin_midi_fin == null ? -1 : e.besoin_midi_fin.substring(0, 2)
+        e.besoinMidiFin == null ? -1 : e.besoinMidiFin.substring(0, 2)
       );
       const soiDeb = Number(
-        e.besoin_soir_debut == null ? -1 : e.besoin_soir_debut.substring(0, 2)
+        e.besoinSoirDebut == null ? -1 : e.besoinSoirDebut.substring(0, 2)
       );
       const soiFin = Number(
-        e.besoin_soir_fin == null ? -1 : e.besoin_soir_fin.substring(0, 2)
+        e.besoinSoirFin == null ? -1 : e.besoinSoirFin.substring(0, 2)
       );
       if (
         e.jour == currentChange.jour &&
@@ -315,18 +324,18 @@ export class BesoinComponent implements OnInit {
     if (index == -1) {
       // Insérer un nouveau besoin pour une journée qui n'a aucun besoin exprimé
       const besoin = {
-        id_besoin: this.randomString(6),
+        idBesoin: this.randomString(6),
         jour,
-        besoin_matin_debut: per == "mat" ? lowValue : null,
-        besoin_matin_fin: per == "mat" ? highValue : null,
-        besoin_midi_debut: per == "mid" ? lowValue : null,
-        besoin_midi_fin: per == "mid" ? highValue : null,
-        besoin_soir_debut: per == "soi" ? lowValue : null,
-        besoin_soir_fin: per == "soi" ? highValue : null,
+        besoinMatinDebut: per == "mat" ? lowValue : null,
+        besoinMatinFin: per == "mat" ? highValue : null,
+        besoinMidiDebut: per == "mid" ? lowValue : null,
+        besoinMidiFin: per == "mid" ? highValue : null,
+        besoinSoirDebut: per == "soi" ? lowValue : null,
+        besoinSoirFin: per == "soi" ? highValue : null,
         type: null,
       };
       const localData = {
-        id_besoin: besoin.id_besoin,
+        idBesoin: besoin.idBesoin,
         id,
         jour,
         value: true,
@@ -342,12 +351,12 @@ export class BesoinComponent implements OnInit {
       this.changes.push(localData);
     } else {
       // Il existe au moins un besoin exprimé pour la journée
-      const id_besoin = this.data[index].id_besoin;
+      const idBesoin = this.data[index].idBesoin;
       const index2 = this.data.findIndex((e) => e.id == id);
       if (index2 == -1 || updateRange) {
         // Insérer un nouveau besoin pour une journée qui a déja un besoin
         const localData = {
-          id_besoin, // Avoir le même id pour le même jour
+          idBesoin, // Avoir le même id pour le même jour
           id,
           jour,
           value: true,
@@ -358,10 +367,10 @@ export class BesoinComponent implements OnInit {
         switch (per) {
           case "mat":
             const besoinMat = {
-              id_besoin,
+              idBesoin,
               jour,
-              besoin_matin_debut: lowValue,
-              besoin_matin_fin: highValue,
+              besoinMatinDebut: lowValue,
+              besoinMatinFin: highValue,
               type: "mat",
             };
             this.autosave
@@ -380,10 +389,10 @@ export class BesoinComponent implements OnInit {
             break;
           case "mid":
             const besoinMidi = {
-              id_besoin,
+              idBesoin,
               jour,
-              besoin_midi_debut: lowValue,
-              besoin_midi_fin: highValue,
+              besoinMidiDebut: lowValue,
+              besoinMidiFin: highValue,
               type: "mid",
             };
             this.autosave
@@ -402,10 +411,10 @@ export class BesoinComponent implements OnInit {
             break;
           case "soi":
             const besoinSoir = {
-              id_besoin,
+              idBesoin,
               jour,
-              besoin_soir_debut: lowValue,
-              besoin_soir_fin: highValue,
+              besoinSoirDebut: lowValue,
+              besoinSoirFin: highValue,
               type: "soi",
             };
             this.autosave
@@ -427,14 +436,14 @@ export class BesoinComponent implements OnInit {
         }
       } else {
         // Modifier un besoin (le supprimer de la BDD)
-        const id_besoin = this.data[index].id_besoin;
+        const idBesoin = this.data[index].idBesoin;
         switch (per) {
           case "mat":
             const besoinMat = {
-              id_besoin,
+              idBesoin,
               jour,
-              besoin_matin_debut: null,
-              besoin_matin_fin: null,
+              besoinMatinDebut: null,
+              besoinMatinFin: null,
               type: "mat",
             };
             if (this.autosave)
@@ -448,10 +457,10 @@ export class BesoinComponent implements OnInit {
             break;
           case "mid":
             const besoinMidi = {
-              id_besoin,
+              idBesoin,
               jour,
-              besoin_midi_debut: null,
-              besoin_midi_fin: null,
+              besoinMidiDebut: null,
+              besoinMidiFin: null,
               type: "mid",
             };
             if (this.autosave)
@@ -465,10 +474,10 @@ export class BesoinComponent implements OnInit {
             break;
           case "soi":
             const besoinSoir = {
-              id_besoin,
+              idBesoin,
               jour,
-              besoin_soir_debut: null,
-              besoin_soir_fin: null,
+              besoinSoirDebut: null,
+              besoinSoirFin: null,
               type: "soi",
             };
             this.autosave
