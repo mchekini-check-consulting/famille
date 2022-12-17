@@ -34,31 +34,6 @@
     </mat-step>
     <mat-step
       ><ng-template matStepLabel>Choisir les journées</ng-template>
-      <!--mat-form-field
-        appearance="fill"
-        style="margin-top: 10px; margin-bottom: -30px; width: 400px"
-      >
-        <mat-label>Jours</mat-label>
-        <mat-select
-          [formControl]="jours"
-          multiple
-          (selectionChange)="setJours($event.value)"
-        >
-          <mat-select-trigger>
-            <span>{{jours.value ? jours.value[0] : ''}}</span>
-            <span
-              *ngIf="jours.value?.length > 1"
-              style="opacity: 0.75; font-size: 0.75em"
-            >
-              (+{{jours.value.length - 1}} {{jours.value?.length === 2 ? 'autre'
-              : 'autres'}})
-            </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let jour of jourList" [value]="jour"
-            >{{jour}}</mat-option
-          >
-        </mat-select>
-      </mat-form-field-->
       <div
         *ngIf="dataSource.length == 0"
         style="margin-top: 20px; margin-bottom: -30px"
