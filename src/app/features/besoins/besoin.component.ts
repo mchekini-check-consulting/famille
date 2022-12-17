@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, ElementRef, OnInit, QueryList, ViewChildren} from "@angular/core";
 import { Options, LabelType, ChangeContext } from "@angular-slider/ngx-slider";
 
 import { ToastrService } from "ngx-toastr";
@@ -10,23 +10,14 @@ import {MatDialog} from "@angular/material/dialog";
 import {HttpErrorResponse} from "@angular/common/http";
 import {InfosService} from "../../core/service/famille.service";
 import {Famille} from "../../core/model/famille";
-import * as _ from 'lodash'
 
-declare interface TableRow {
-  jour: string
-  matin: boolean
-  midi: boolean
-  soir: boolean
-}
+import {Router} from "@angular/router";
+
+
 export interface Header {
   color: string;
   text: string;
 }
-declare interface TableData {
-  headerRow: string[]
-  dataRows: TableRow[]
-}
-
 export interface Jours {
   color: string;
   text: string;
@@ -54,6 +45,7 @@ export interface modelBesoins {
   besoin_soir_fin: string;
 }
 
+
 @Component({
   selector: "app-disponibilites",
   templateUrl: "./besoin.component.html",
@@ -70,18 +62,8 @@ export interface modelBesoins {
   ],
 })
 export class BesoinComponent implements OnInit {
-  emptyTable: TableData = {
-    headerRow: ['', 'Matin', 'Midi', 'Soir'],
-    dataRows: [
-      { jour: 'Samedi', matin: false, midi: false, soir: false },
-      { jour: 'Dimanche', matin: false, midi: false, soir: false },
-      { jour: 'Lundi', matin: false, midi: false, soir: false },
-      { jour: 'Mardi', matin: false, midi: false, soir: false },
-      { jour: 'Mercredi', matin: false, midi: false, soir: false },
-      { jour: 'Jeudi', matin: false, midi: false, soir: false },
-      { jour: 'Vendredi', matin: false, midi: false, soir: false },
-    ]
-  }
+  @ViewChildren("checkbox") checkboxes: QueryList<ElementRef>;
+  active : boolean ;
   user: Famille;
   initialUser: Famille;
   result: boolean;
@@ -91,15 +73,15 @@ export class BesoinComponent implements OnInit {
   initData: Data[] = [];
   changes: Data[] = [];
   initialBesoins: modelBesoins[] = [];
-  tableData: TableData = _.cloneDeep(this.emptyTable)
-  tableDataOld: TableData = _.cloneDeep(this.emptyTable)
+
 
   constructor(
     private toastr: ToastrService,
     private besoinService: BesoinsService,
     private optionsService: OptionsService,
     private userService: InfosService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   headers: Header[] = [
@@ -129,6 +111,7 @@ export class BesoinComponent implements OnInit {
       this.user = data;
       this.initialUser = {...data};
     });
+
     let localData = {
       id_besoin: null,
       id: null,
@@ -179,7 +162,8 @@ export class BesoinComponent implements OnInit {
         }
       });
     });
-  }
+    this.active = this.initialBesoins.length != 0;
+      }
 
   handleAutoSave(): void {
     this.optionsService
@@ -219,6 +203,7 @@ export class BesoinComponent implements OnInit {
       next: () => {
         this.changes = [];
         this.toastr.success("Données sauvegardées avec succès");
+        this.initialBesoins.length = 1;
       },
       error: () =>
         this.toastr.error("Erreur lors de la modification. veuillez réessayer"),
@@ -565,23 +550,30 @@ export class BesoinComponent implements OnInit {
       }
     })
   }
+
   deleteBesoinsByFamille() {
-    this.besoinService.deleteBesoin(this.user.mail).subscribe({
+    this.besoinService.deleteAllBesoin(this.user.mail).subscribe({
       next: () => {
-        this.toastr.success('Besoins Supprimés avec succes')
+        this.initialBesoins.length=0;
+        this.toastr.success('Besoins Supprimés avec succes');
+        this.redirectTo("besoins")
+
       },
       error: (error: HttpErrorResponse) => {
         console.error(error.message)
-        this.toastr.error('Il y a eu un souci lors de la suppression de vos Disponibilités')
+        this.toastr.error('Erreur lors de la suppression des besoins')
       }
     })
   }
-  isOldTableEmpty(): boolean {
-    return _.isEqual(this.tableDataOld, this.emptyTable)
+  redirectTo(uri:string){
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+        this.router.navigate([uri]));
   }
   isTableEmpty(): boolean {
-    return _.isEqual(this.tableData, this.emptyTable)
+    return this.initialBesoins.length == 0;
   }
+
+
 
   options: Options = {
     step: 1,

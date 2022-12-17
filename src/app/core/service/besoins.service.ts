@@ -44,4 +44,7 @@ export class BesoinsService {
   deleteBesoin(id: string): Observable<BesoinsDay> {
     return this.http.delete<BesoinsDay>(besoinsApiUrl + "/delete/" + id);
   }
+  deleteAllBesoin(id: string): Observable<BesoinsDay> {
+    return this.http.delete<BesoinsDay>(besoinsApiUrl + "/delete-all/" + id);
+  }
 }

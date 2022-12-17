@@ -24,6 +24,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { AdministrationComponent } from './administration/administration.component';
+import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AdministrationComponent } from './administration/administration.compone
     NotificationComponent,
     DialogElements,
     AdministrationComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
